@@ -16,4 +16,15 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  
+  public static class ShooterConstants {
+    
+    //TODO: get actual motor ids
+    public static final int PIVOT_MOTOR_ID = 0;
+    public static final int LEFT_SHOOTER_MOTOR_ID = 0;
+    public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
+  }
+
+  
+
 }
