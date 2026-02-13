@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.slicelibs.configs.CTREConfigs;
 
 public class Shooter extends SubsystemBase {
 
@@ -22,6 +23,10 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor = new TalonFX(Constants.ShooterConstants.LEFT_SHOOTER_MOTOR_ID);
     rightShooterMotor = new TalonFX(Constants.ShooterConstants.RIGHT_SHOOTER_MOTOR_ID);
 
+    leftShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
+    rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
+
+
   }
 
   public void spinFlywheels(double speed){
@@ -31,6 +36,10 @@ public class Shooter extends SubsystemBase {
 
   public void pivotShooter(double speed){
     pivotMotor.set(speed);
+  }
+
+  public void speedUpFlywheels(){
+    leftShooterMotor.set
   }
 
   @Override

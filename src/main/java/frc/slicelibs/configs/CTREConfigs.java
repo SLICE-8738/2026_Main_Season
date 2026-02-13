@@ -1,0 +1,30 @@
+package frc.slicelibs.configs;
+
+import java.lang.invoke.VarHandle;
+
+import com.ctre.phoenix6.configs.AudioConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+
+import frc.robot.Constants;
+
+public class CTREConfigs {
+
+
+    public final TalonFXConfiguration shooterConfigs = new TalonFXConfiguration();
+
+    public CTREConfigs(){
+
+        /* Shooter PIDs */
+        var shooterPID = shooterConfigs.Slot0;
+        shooterPID.kP = Constants.ShooterConstants.FLYWHEEL_KP;
+        shooterPID.kI = Constants.ShooterConstants.FLYWHEEL_KI;
+        shooterPID.kD = Constants.ShooterConstants.FLYWHEEL_KD;
+    }
+
+
+    
+
+    
+
+    
+}

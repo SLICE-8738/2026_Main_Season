@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import frc.slicelibs.configs.CTREConfigs;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,6 +16,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final CTREConfigs CTRE_CONFIGS = new CTREConfigs();
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
@@ -23,8 +29,19 @@ public final class Constants {
     public static final int PIVOT_MOTOR_ID = 0;
     public static final int LEFT_SHOOTER_MOTOR_ID = 0;
     public static final int RIGHT_SHOOTER_MOTOR_ID = 0;
+
+    public static final double FLYWHEEL_KP = 0.0;
+    public static final double FLYWHEEL_KI = 0.0;
+    public static final double FLYWHEEL_KD = 0.0;
+
+    public static final double SHOOTER_STOW = 0.0;
+
   }
 
-  
+  public static class FieldConstants {
+
+    public static final Pose2d  CENTER_HUB = new Pose2d();
+
+  }
 
 }
