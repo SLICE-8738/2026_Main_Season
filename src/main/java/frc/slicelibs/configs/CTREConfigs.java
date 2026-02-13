@@ -14,6 +14,10 @@ public class CTREConfigs {
 
     public CTREConfigs(){
 
+        //////////////////////////
+        /// Shooter Constants ////
+        //////////////////////////
+
         /* Shooter PIDs */
         var shooterPID = shooterConfigs.Slot0;
         shooterPID.kP = Constants.ShooterConstants.FLYWHEEL_KP;
