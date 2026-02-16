@@ -23,6 +23,9 @@ public class CTREConfigs {
         shooterPID.kP = Constants.ShooterConstants.FLYWHEEL_KP;
         shooterPID.kI = Constants.ShooterConstants.FLYWHEEL_KI;
         shooterPID.kD = Constants.ShooterConstants.FLYWHEEL_KD;
+
+        var shooterLimits = shooterConfigs.CurrentLimits;
+        
     }
 
 

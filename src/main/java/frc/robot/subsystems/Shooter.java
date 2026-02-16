@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -15,8 +17,7 @@ public class Shooter extends SubsystemBase {
   private TalonFX pivotMotor, leftShooterMotor, rightShooterMotor;
   //private Encoder pivotEncoder, leftEncoder, rightEncoder;
 
-
-  private double targetSpeed;
+  private double targetSpeed, targetPosition;
 
   
 
@@ -30,6 +31,7 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
 
 
+
   }
 
   public void spinFlywheels(double speed){
@@ -39,6 +41,7 @@ public class Shooter extends SubsystemBase {
 
   public void pivotShooter(double speed){
     pivotMotor.set(speed);
+
   }
 
   public void speedUpFlywheels(double speed){
@@ -47,6 +50,17 @@ public class Shooter extends SubsystemBase {
     VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
 
     leftShooterMotor.setControl(request.withVelocity(speed));
+    rightShooterMotor.setControl(request.withAcceleration(speed));
+
+  }
+
+  public void pivotShooterToPosition(double position){
+    targetPosition = position;
+
+    PositionVoltage request = new PositionVoltage(position);
+
+    leftShooterMotor.setControl(request.withPosition(position));
+    rightShooterMotor.setControl(request.withPosition(position));
 
   }
 
