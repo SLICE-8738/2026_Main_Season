@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.slicelibs.configs.CTREConfigs;
 
 /**
@@ -73,7 +75,9 @@ public final class Constants {
 
     // Height and length of the hub
     public static final double HUB_HEIGHT = 6; // Feet 
-    public static final double HUB_LENGTH = 1.958335; // Feet: half of hub length
+    public static final double HUB_HALF_LENGTH = 1.958335; // Feet: half of hub length
+
+    public static final Alliance CURRENT_ALLIANCE = DriverStation.getAlliance().get();
 
   }
 

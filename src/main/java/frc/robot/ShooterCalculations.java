@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.LimelightHelpers.PoseEstimate;
 
 /** Add your docs here. */
@@ -57,8 +58,8 @@ public class ShooterCalculations {
         // This will repeat until DIETIME, so that an infinite loop does not occur.
         // If a loop occurs, the result will be 0, 0.
         for (int i = 0; i < Constants.ShooterConstants.SHOOTER_DIE_TIME; i++){
-            height_low = trajectory(distance - Constants.FieldConstants.HUB_LENGTH, new_angle, new_velocity); // Calculate the height before the hub.
-            height_high = trajectory(distance + Constants.FieldConstants.HUB_LENGTH, new_angle, new_velocity); // Calculate the height after the hub.
+            height_low = trajectory(distance - Constants.FieldConstants.HUB_HALF_LENGTH, new_angle, new_velocity); // Calculate the height before the hub.
+            height_high = trajectory(distance + Constants.FieldConstants.HUB_HALF_LENGTH, new_angle, new_velocity); // Calculate the height after the hub.
             if ((height_low > Constants.FieldConstants.HUB_HEIGHT) && (height_high < Constants.FieldConstants.HUB_HEIGHT)){ // If we have cleared the hub and then hit the back wall...
                 result[0] = new_angle; // ...set the angle,
                 result[1] = new_velocity; // and the velocity.
@@ -77,9 +78,13 @@ public class ShooterCalculations {
     }
 
     public static double distanceToHub(){
-        // TODO: Fix to check each alliance 
-        PoseEstimate robotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue("SLICE LIMELIGHT"); // TODO: Add limelight name
-        double distance = robotPose.avgTagDist + Constants.FieldConstants.HUB_LENGTH; // Get the distance to the tag plus the hub's length
+        PoseEstimate robotPose;
+        if( Constants.FieldConstants.CURRENT_ALLIANCE == Alliance.Blue){
+            robotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue("SLICE LIMELIGHT"); // TODO: Add limelight name
+        } else/*if (Constants.FieldConstants.CURRENT_ALLIANCE == Alliance.Red)*/{
+            robotPose = LimelightHelpers.getBotPoseEstimate_wpiRed("SLICE LIMELIGHT");
+        }
+        double distance = robotPose.avgTagDist + Constants.FieldConstants.HUB_HALF_LENGTH; // Get the distance to the tag plus the hub's length
         return distance;
     }
 
@@ -98,9 +103,11 @@ public class ShooterCalculations {
 
         if ((result[0] < Constants.ShooterConstants.MIN_SHOOTER_ANGLE) || (result[0] > Constants.ShooterConstants.MAX_SHOOTER_ANGLE)){ // If the angle is invalid...
             result[0] = -1; // ...set the angle to -1.
+            throw new IndexOutOfBoundsException("Angle out of bounds");
         }
         if ((result[1] < Constants.ShooterConstants.MIN_FLYWHEEL_VELOCITY) || (result[1] > Constants.ShooterConstants.MAX_FLYWHEEL_VELOCITY)){ // If the velocity is invalid...
             result[1] = -1; // ..set the velocity to -1.
+            throw new IndexOutOfBoundsException("Velocity out of bounds");
         }
 
         return result;
