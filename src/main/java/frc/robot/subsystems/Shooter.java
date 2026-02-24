@@ -70,18 +70,11 @@ public class Shooter extends SubsystemBase {
 
   public boolean atTargetSpeed(double error){
     double currentSpeed = leftShooterMotor.getVelocity().getValueAsDouble();
-    currentSpeed = rightShooterMotor.getVelocity().getValueAsDouble() /2 ;
+    currentSpeed = rightShooterMotor.getVelocity().getValueAsDouble() / 2;
     if(Math.abs(targetSpeed - currentSpeed) >= error){
       return true;
     }
     return false;
-  }
-
-  public void shoot(){
-    double distance = ShooterCalculations.distanceToHub();
-    double[] result = ShooterCalculations.calculateShooterTrajectory(distance);
-    targetAngle = result[0] * 2 * Math.PI;
-    angularVelocity = result[1] / Constants.ShooterConstants.FLYWHEEL_RADIUS;
   }
 
   public double getAngle(){
