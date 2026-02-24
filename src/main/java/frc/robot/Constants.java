@@ -44,6 +44,15 @@ public final class Constants {
     //TODO: get actual shooter rpm
     public static final double SHOOTER_RPM = 60;
 
+    // Robot dimensions
+    public static final double SHOOTER_HEIGHT = 1.7891; // Feet
+    public static final double FLYWHEEL_RADIUS = 0.1667; // Feet
+
+    // Maximums and minimums (Tune these)
+    public static final double MAX_FLYWHEEL_VELOCITY = 35; // Feet per second
+    public static final double MIN_FLYWHEEL_VELOCITY = 10; // Feet per second
+    public static final double MAX_SHOOTER_ANGLE = (Math.PI / 2); // Radians
+    public static final double MIN_SHOOTER_ANGLE = (Math.PI / 15); // Radians
 
     // Errors //
     public static final double FLYWHEEL_RPM_ACCEPTABLE_ERROR = 2; // The maximum error allowed in the flywheel RPM
@@ -51,11 +60,20 @@ public final class Constants {
     public static final double HORIZONTAL_AIM_ACCEPTABLE_ERROR = 2; // The maximum error allowed in the shooter angle horizontally (controlled by drivetrain). in degrees
     public static final double MAXIMUM_SHOOTING_DRIVETRAIN_SPEED = 0.1; // The maximum speed that the drivetrain can move at and shoot
 
+    // Optimization for Maths (Tune these)
+    public static final double SHOOTER_STEP = 0.1;
+    public static final int SHOOTER_DIE_TIME = 1000000; // Maximum number of optimizations allowed
+    public static final double H = 0.0000001;
   }
 
   public static class FieldConstants {
 
     public static final Pose2d  CENTER_HUB = new Pose2d();
+    public static final double GRAVITY = 32.185; // Feet per second per second
+
+    // Height and length of the hub
+    public static final double HUB_HEIGHT = 6; // Feet 
+    public static final double HUB_LENGTH = 1.958335; // Feet: half of hub length
 
   }
 

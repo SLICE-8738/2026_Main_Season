@@ -11,6 +11,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
+import frc.robot.ShooterCalculations;
+import frc.robot.LimelightHelpers.PoseEstimate;
 
 public class Shooter extends SubsystemBase {
 
@@ -19,6 +22,8 @@ public class Shooter extends SubsystemBase {
 
   private double targetSpeed, targetPosition;
 
+  double targetAngle; // Angle in rotations to set shooter to
+  double angularVelocity; // Angular velocity of flywheels needed
   
 
   /** Creates a new Shooter. */
@@ -57,7 +62,7 @@ public class Shooter extends SubsystemBase {
   public void pivotShooterToPosition(double position){
     targetPosition = position;
 
-    PositionVoltage request = new PositionVoltage(position); // TODO: Is this PositionVoltage or VelocityVoltage?
+    PositionVoltage request = new PositionVoltage(position); 
 
     pivotMotor.setControl(request.withPosition(position)); 
 
@@ -70,6 +75,21 @@ public class Shooter extends SubsystemBase {
       return true;
     }
     return false;
+  }
+
+  public void shoot(){
+    double distance = ShooterCalculations.distanceToHub();
+    double[] result = ShooterCalculations.calculateShooterTrajectory(distance);
+    targetAngle = result[0] * 2 * Math.PI;
+    angularVelocity = result[1] / Constants.ShooterConstants.FLYWHEEL_RADIUS;
+  }
+
+  public double getAngle(){
+    return targetAngle;
+  }
+
+  public double getAngularVelocity(){
+    return angularVelocity;
   }
 
   @Override
