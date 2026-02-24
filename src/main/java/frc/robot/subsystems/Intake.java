@@ -12,42 +12,42 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-private TalonFX extenderMotor;
-private TalonFX rotationMotor;
+  private TalonFX extenderMotor;
+  private TalonFX rotationMotor;
 
-private double targetPosition;
+  private double targetPosition;
 
   /** Creates a new Intake. */
   public Intake() {
 
-  extenderMotor = new TalonFX(0);
-  rotationMotor = new TalonFX(0);
+    extenderMotor = new TalonFX(0);
+    rotationMotor = new TalonFX(0);
 
   }
 
-    public void moveExtendMotor(double speed) {
-      extenderMotor.set(speed);
-    }
+  public void moveExtendMotor(double speed) {
+    extenderMotor.set(speed);
+  }
 
-    public void moveRotationMotor(double speed) {
-      rotationMotor.set(speed);
-    }
+  public void moveRotationMotor(double speed) {
+    rotationMotor.set(speed);
+  }
 
-    public void moveIntakeToPosition(double position) {
-      targetPosition = position;
+  public void moveIntakeToPosition(double position) {
+    targetPosition = position;
 
-      PositionVoltage request = new PositionVoltage(0).withSlot(0);
+    PositionVoltage request = new PositionVoltage(0).withSlot(0);
 
-      extenderMotor.setControl(request.withPosition(targetPosition));
+    extenderMotor.setControl(request.withPosition(targetPosition));
 
-    }
+  }
 
-    public void speedMotorUp(double speed){
+  public void speedMotorUp(double speed){
       
-      VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
+    VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
 
-      rotationMotor.setControl(request.withVelocity(speed));
-    }
+    rotationMotor.setControl(request.withVelocity(speed));
+  }
 
   @Override
   public void periodic() {
