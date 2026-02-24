@@ -57,10 +57,9 @@ public class Shooter extends SubsystemBase {
   public void pivotShooterToPosition(double position){
     targetPosition = position;
 
-    PositionVoltage request = new PositionVoltage(position);
+    PositionVoltage request = new PositionVoltage(position); // TODO: Is this PositionVoltage or VelocityVoltage?
 
-    leftShooterMotor.setControl(request.withPosition(position));
-    rightShooterMotor.setControl(request.withPosition(position));
+    pivotMotor.setControl(request.withPosition(position)); 
 
   }
 
