@@ -4,7 +4,11 @@
 
 package frc.slicelibs.configs;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+
 /** Add your docs here. */
 public class CTREConfigs {
     
+
+    public final TalonFXConfiguration m_swerveDriveConfigs = new TalonFXConfiguration();
 }
