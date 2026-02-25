@@ -6,5 +6,11 @@ package frc.slicelibs.configs;
 
 /** Add your docs here. */
 public class CTREConfigs {
+
+    /* Initiating the different TalonFX configurators */
+
+    public CTREConfigs(){
+
+    }
     
 }
