@@ -8,6 +8,12 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 /** Add your docs here. */
 public class CTREConfigs {
+
+    /* Initiating the different TalonFX configurators */
+
+    public CTREConfigs(){
+
+    }
     
 
     public final TalonFXConfiguration m_swerveDriveConfigs = new TalonFXConfiguration();
