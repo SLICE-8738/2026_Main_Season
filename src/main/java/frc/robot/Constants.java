@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import frc.slicelibs.configs.CTREConfigs;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,7 +15,25 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static final CTREConfigs CTRE_CONFIGS = new CTREConfigs();
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class DriveConstants {
+
+    //TODO: Figure out PIDs for both Drive Motors and Turn Motors
+    public static final double DRIVE_KP = 0;
+    public static final double DRIVE_KI = 0;
+    public static final double DRIVE_KD = 0;
+
+    public static final double TURN_KP = 0;
+    public static final double TURN_KI = 0;
+    public static final double TURN_KD = 0;
+    
+
+  }
+
 }

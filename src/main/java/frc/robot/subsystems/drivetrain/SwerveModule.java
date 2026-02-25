@@ -2,6 +2,8 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import frc.robot.Constants;
+
 public class SwerveModule {
  
     private int driveCanID;
@@ -19,6 +21,9 @@ public class SwerveModule {
 
         drivingMotor = new TalonFX(driveCanID);
         turningMotor = new TalonFX(turnCanId);
+
+        drivingMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.m_swerveDriveConfigs);
+        turningMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.m_swerveTurnConfigs);
 
     }
     
