@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.LimelightHelpers.PoseEstimate;
 
@@ -84,7 +87,12 @@ public class ShooterCalculations {
         } else/*if (Constants.FieldConstants.CURRENT_ALLIANCE == Alliance.Red)*/{
             robotPose = LimelightHelpers.getBotPoseEstimate_wpiRed("SLICE LIMELIGHT");
         }
-        double distance = robotPose.avgTagDist + Constants.FieldConstants.HUB_HALF_LENGTH; // Get the distance to the tag plus the hub's length
+        
+        // Does Pose2d.getX() return metres?
+        double[] robotXY = {Units.metersToFeet(robotPose.pose.getX()), Units.metersToFeet(robotPose.pose.getY())};
+        double[] hubXY = {Units.metersToFeet(Constants.FieldConstants.CENTER_HUB.getX()), Units.metersToFeet(Constants.FieldConstants.CENTER_HUB.getY())};
+        double distance = Math.sqrt(Math.pow((robotXY[0] - hubXY[0]), 2) + Math.pow((robotXY[1] - hubXY[1]), 2)); // Pythagorean theorem to get distance
+        //double distance = robotPose.avgTagDist + Constants.FieldConstants.HUB_HALF_LENGTH; // Get the distance to the tag plus the hub's length
         return distance;
     }
 

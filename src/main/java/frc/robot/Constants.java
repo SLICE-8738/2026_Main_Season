@@ -70,7 +70,7 @@ public final class Constants {
 
   public static class FieldConstants {
 
-    public static final Pose2d  CENTER_HUB = new Pose2d();
+    public static final Pose2d  CENTER_HUB = new Pose2d(); // TODO: Where is the centre hub?
     public static final double GRAVITY = 32.185; // Feet per second per second
 
     // Height and length of the hub

@@ -22,10 +22,6 @@ public class Shooter extends SubsystemBase {
 
   private double targetSpeed, targetPosition;
 
-  double targetAngle; // Angle in rotations to set shooter to
-  double angularVelocity; // Angular velocity of flywheels needed
-  
-
   /** Creates a new Shooter. */
   public Shooter() {
     pivotMotor = new TalonFX(Constants.ShooterConstants.PIVOT_MOTOR_ID);
@@ -75,14 +71,6 @@ public class Shooter extends SubsystemBase {
       return true;
     }
     return false;
-  }
-
-  public double getAngle(){
-    return targetAngle;
-  }
-
-  public double getAngularVelocity(){
-    return angularVelocity;
   }
 
   @Override
