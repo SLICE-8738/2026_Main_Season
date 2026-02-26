@@ -24,27 +24,37 @@ public class Shooter extends SubsystemBase {
 
   /** Creates a new Shooter. */
   public Shooter() {
+    // Define the motors for pivoting the shooter and the flywheels.
     pivotMotor = new TalonFX(Constants.ShooterConstants.PIVOT_MOTOR_ID);
     leftShooterMotor = new TalonFX(Constants.ShooterConstants.LEFT_SHOOTER_MOTOR_ID);
     rightShooterMotor = new TalonFX(Constants.ShooterConstants.RIGHT_SHOOTER_MOTOR_ID);
 
+    // Set the motor configs.
     leftShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
     rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
-
-
-
   }
 
+  /**
+   * Sets the flywheels to spin at a certain speed.
+   * @param speed The speed to set (a value between -1.0 and 1.0)
+   */
   public void spinFlywheels(double speed){
     leftShooterMotor.set(speed);
     rightShooterMotor.set(speed);
   }
 
+  /**
+   * Sets the pivot to a certain speed.
+   * @param speed The speed to set (a value between -1.0 and 1.0)
+   */
   public void pivotShooter(double speed){
     pivotMotor.set(speed);
-
   }
 
+  /**
+   * Accelerates the flywheels to a certain speed.
+   * @param speed The speed to spin at in rotations per second.
+   */
   public void speedUpFlywheels(double speed){
     targetSpeed = speed;
     
@@ -55,6 +65,10 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  /**
+   * Set the shooter's pivot motor to a specific angle.
+   * @param position The position to set in rotations.
+   */
   public void pivotShooterToPosition(double position){
     targetPosition = position;
 
@@ -64,9 +78,14 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  /**
+   * Check if the motor is at a specific speed.
+   * @param error How much error is allowed to be considered "at speed."
+   * @return Returns whether or not the motor is at speed.
+   */
   public boolean atTargetSpeed(double error){
     double currentSpeed = leftShooterMotor.getVelocity().getValueAsDouble();
-    currentSpeed = rightShooterMotor.getVelocity().getValueAsDouble() / 2;
+    currentSpeed += rightShooterMotor.getVelocity().getValueAsDouble() / 2;
     if(Math.abs(targetSpeed - currentSpeed) >= error){
       return true;
     }
