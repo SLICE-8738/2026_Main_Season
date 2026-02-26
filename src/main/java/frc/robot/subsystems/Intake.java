@@ -17,7 +17,8 @@ public class Intake extends SubsystemBase {
 
   private double targetPosition;
 
-  private boolean active;
+  private boolean active; // Tells whether or not intake is active
+
 
   /** Creates a new Intake. */
   public Intake() {
@@ -29,23 +30,42 @@ public class Intake extends SubsystemBase {
 
   }
 
-
+  /**
+   * Changes if intake is active
+   * @param setTrue true or false value to set boolean
+  */
   public void setActive(boolean setTrue) {
     active = setTrue;
   }
-
+  
+  /**
+   * Returns true if boolean is active
+   * @return
+   */
   public boolean isActive() {
     return active;
   }
-
+  
+  /**
+   * Sets speed of the extender motor
+   * @param speed speed to set the motor to (-1.0 to 1.0)
+   */
   public void moveExtendMotor(double speed) {
     extenderMotor.set(speed);
   }
 
+  /**
+   * Sets speed of rotation motor
+   * @param speed speed to set the motor to (-1.0 to 1.0)
+   */
   public void moveRotationMotor(double speed) {
     rotationMotor.set(speed);
   }
 
+  /**
+   * Moves the intake to the set position
+   * @param position position to have the intake move to
+   */
   public void moveIntakeToPosition(double position) {
     targetPosition = position;
 
@@ -55,6 +75,10 @@ public class Intake extends SubsystemBase {
 
   }
 
+  /**
+   * Increases motor speed
+   * @param speed speed to set the motor to (-1.0 to 1.0)
+   */
   public void speedMotorUp(double speed){
       
     VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
@@ -62,6 +86,7 @@ public class Intake extends SubsystemBase {
     rotationMotor.setControl(request.withVelocity(speed));
   }
 
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
