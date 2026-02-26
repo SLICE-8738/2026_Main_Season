@@ -110,11 +110,11 @@ public class ShooterCalculations {
         double[] result = optimize(hub_distance, initial_angle, initial_velocity); // Get the result.
 
         if ((result[0] < Constants.ShooterConstants.MIN_SHOOTER_ANGLE) || (result[0] > Constants.ShooterConstants.MAX_SHOOTER_ANGLE)){ // If the angle is invalid...
-            result[0] = -1; // ...set the angle to -1.
+            result[0] = 0; // ...set the angle to -1.
             throw new IndexOutOfBoundsException("Angle out of bounds");
         }
         if ((result[1] < Constants.ShooterConstants.MIN_FLYWHEEL_VELOCITY) || (result[1] > Constants.ShooterConstants.MAX_FLYWHEEL_VELOCITY)){ // If the velocity is invalid...
-            result[1] = -1; // ..set the velocity to -1.
+            result[1] = 0; // ..set the velocity to -1.
             throw new IndexOutOfBoundsException("Velocity out of bounds");
         }
 

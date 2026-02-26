@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.slicelibs.configs.CTREConfigs;
@@ -70,12 +72,13 @@ public final class Constants {
 
   public static class FieldConstants {
 
-    public static final Pose2d  CENTER_HUB = new Pose2d(); // TODO: Where is the centre hub?
+    // TODO: This assumes that the origin follows the alliance
+    public static final Translation2d  CENTER_HUB = new Translation2d(4.62534, 4.03479); // TODO: Check the centre hub (in metres)
     public static final double GRAVITY = 32.185; // Feet per second per second
 
     // Height and length of the hub
     public static final double HUB_HEIGHT = 6; // Feet 
-    public static final double HUB_HALF_LENGTH = 1.958335; // Feet: half of hub length
+    public static final double HUB_HALF_LENGTH = 1.958335; // Feet
 
     public static final Alliance CURRENT_ALLIANCE = DriverStation.getAlliance().get();
 
