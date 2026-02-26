@@ -17,12 +17,25 @@ public class Intake extends SubsystemBase {
 
   private double targetPosition;
 
+  private boolean active;
+
   /** Creates a new Intake. */
   public Intake() {
 
     extenderMotor = new TalonFX(0);
     rotationMotor = new TalonFX(0);
 
+    active = false;
+
+  }
+
+
+  public void setActive(boolean setTrue) {
+    active = setTrue;
+  }
+
+  public boolean isActive() {
+    return active;
   }
 
   public void moveExtendMotor(double speed) {
