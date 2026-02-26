@@ -71,16 +71,13 @@ public final class Constants {
   }
 
   public static class FieldConstants {
-
-    // TODO: This assumes that the origin follows the alliance
-    public static final Translation2d  CENTER_HUB = new Translation2d(4.62534, 4.03479); // TODO: Check the centre hub (in metres)
+    public static final Translation2d BLUE_HUB = new Translation2d(4.62534, 4.03479); // TODO: Check the hubs (in metres)
+    public static final Translation2d RED_HUB = new Translation2d(11.91514, 4.03479);
     public static final double GRAVITY = 32.185; // Feet per second per second
 
     // Height and length of the hub
     public static final double HUB_HEIGHT = 6; // Feet 
-    public static final double HUB_HALF_LENGTH = 1.958335; // Feet
-
-    public static final Alliance CURRENT_ALLIANCE = DriverStation.getAlliance().get();
+    public static final double HUB_HALF_LENGTH = 1.958335; // Feet    
 
   }
 

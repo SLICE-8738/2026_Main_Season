@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.DistanceUnit;
 import edu.wpi.first.units.Unit;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.LimelightHelpers.PoseEstimate;
 
@@ -82,15 +83,21 @@ public class ShooterCalculations {
 
     public static double distanceToHub(){
         PoseEstimate robotPose;
-        if( Constants.FieldConstants.CURRENT_ALLIANCE == Alliance.Blue){
+        double[] hubXY = new double[2];
+        if (DriverStation.getAlliance().get() == Alliance.Blue){
             robotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue("SLICE LIMELIGHT"); // TODO: Add limelight name
-        } else/*if (Constants.FieldConstants.CURRENT_ALLIANCE == Alliance.Red)*/{
+            hubXY[0] = Units.metersToFeet(Constants.FieldConstants.BLUE_HUB.getX());
+            hubXY[1] = Units.metersToFeet(Constants.FieldConstants.BLUE_HUB.getY());
+        } else if (DriverStation.getAlliance().get() == Alliance.Red) { 
             robotPose = LimelightHelpers.getBotPoseEstimate_wpiRed("SLICE LIMELIGHT");
+            hubXY[0] = Units.metersToFeet(Constants.FieldConstants.RED_HUB.getX());
+            hubXY[1] = Units.metersToFeet(Constants.FieldConstants.RED_HUB.getY());
+        } else {
+            throw new RuntimeException("Driver station alliance not found!");
         }
 
         // TODO: Does Pose2d.getX() return metres?
         double[] robotXY = {Units.metersToFeet(robotPose.pose.getX()), Units.metersToFeet(robotPose.pose.getY())};
-        double[] hubXY = {Units.metersToFeet(Constants.FieldConstants.CENTER_HUB.getX()), Units.metersToFeet(Constants.FieldConstants.CENTER_HUB.getY())};
         double distance = Math.sqrt(Math.pow((robotXY[0] - hubXY[0]), 2) + Math.pow((robotXY[1] - hubXY[1]), 2)); // Pythagorean theorem to get distance
         //double distance = robotPose.avgTagDist + Constants.FieldConstants.HUB_HALF_LENGTH; // Get the distance to the tag plus the hub's length
         return distance;
@@ -110,11 +117,11 @@ public class ShooterCalculations {
         double[] result = optimize(hub_distance, initial_angle, initial_velocity); // Get the result.
 
         if ((result[0] < Constants.ShooterConstants.MIN_SHOOTER_ANGLE) || (result[0] > Constants.ShooterConstants.MAX_SHOOTER_ANGLE)){ // If the angle is invalid...
-            result[0] = 0; // ...set the angle to -1.
+            result[0] = 0; // ...set the angle to 0.
             throw new IndexOutOfBoundsException("Angle out of bounds");
         }
         if ((result[1] < Constants.ShooterConstants.MIN_FLYWHEEL_VELOCITY) || (result[1] > Constants.ShooterConstants.MAX_FLYWHEEL_VELOCITY)){ // If the velocity is invalid...
-            result[1] = 0; // ..set the velocity to -1.
+            result[1] = 0; // ..set the velocity to 0.
             throw new IndexOutOfBoundsException("Velocity out of bounds");
         }
 

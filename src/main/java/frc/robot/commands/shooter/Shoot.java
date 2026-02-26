@@ -16,8 +16,15 @@ public class Shoot extends ParallelCommandGroup {
   /** Creates a new Shoot. */
   public Shoot(Shooter m_shooter) {
     mainShooter = m_shooter;
+    double[] result = new double[2];
     double distance = ShooterCalculations.distanceToHub();
-    double[] result = ShooterCalculations.calculateShooterTrajectory(distance);
+    try {
+      result = ShooterCalculations.calculateShooterTrajectory(distance);
+    } catch (IndexOutOfBoundsException e) {
+      result[0] = 0;
+      result[1] = 0;
+    }
+    
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new PivotShooter(mainShooter, result[0]), new SpinFlywheels(mainShooter, result[1]));
