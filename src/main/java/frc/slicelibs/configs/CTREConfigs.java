@@ -20,14 +20,24 @@ public class CTREConfigs {
     public CTREConfigs(){
 
 
-        //////////////////////
-        /// Swerve Configs ///
-        //////////////////////
+        ////////////////////////////
+        /// Swerve Drive Configs ///
+        ////////////////////////////
         
-        var swervePIDs = m_swerveDriveConfigs.Slot0;
-        swervePIDs.kP = Constants.DriveConstants.DRIVE_KP;
-        swervePIDs.kI = Constants.DriveConstants.DRIVE_KI;
-        swervePIDs.kD = Constants.DriveConstants.DRIVE_KD;
+        var swerveDrivePIDs = m_swerveDriveConfigs.Slot0;
+        swerveDrivePIDs.kP = Constants.DriveConstants.DRIVE_KP;
+        swerveDrivePIDs.kI = Constants.DriveConstants.DRIVE_KI;
+        swerveDrivePIDs.kD = Constants.DriveConstants.DRIVE_KD;
+
+
+        //////////////////////////
+        /// Swerve Turn Configs //
+        //////////////////////////
+        
+        var swerveTurnPIDs = m_swerveTurnConfigs.Slot0;
+        swerveTurnPIDs.kP = Constants.DriveConstants.TURN_KP;
+        swerveTurnPIDs.kI = Constants.DriveConstants.TURN_KI;
+        swerveTurnPIDs.kD = Constants.DriveConstants.TURN_KD;
 
     }
     

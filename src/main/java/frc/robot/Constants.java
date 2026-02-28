@@ -24,6 +24,20 @@ public final class Constants {
 
   public static class DriveConstants {
 
+
+    /* MOTOR IDS */
+    // TODO Find Motor IDs
+    public static final int FRONT_LEFT_DRIVE_ID = 0;
+    public static final int FRONT_RIGHT_DRIVE_ID = 0;
+    public static final int BACK_LEFT_DRIVE_ID = 0;
+    public static final int BACK_RIGHT_DRIVE_ID = 0;
+
+    public static final int FRONT_LEFT_TURN_ID = 0;
+    public static final int FRONT_RIGHT_TURN_ID = 0;
+    public static final int BACK_LEFT_TURN_ID = 0;
+    public static final int BACK_RIGHT_TURN_ID = 0;
+
+
     //TODO: Figure out PIDs for both Drive Motors and Turn Motors
     public static final double DRIVE_KP = 0;
     public static final double DRIVE_KI = 0;
