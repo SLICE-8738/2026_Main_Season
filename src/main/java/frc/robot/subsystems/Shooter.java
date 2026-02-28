@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -32,6 +33,8 @@ public class Shooter extends SubsystemBase {
     // Set the motor configs.
     leftShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
     rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
+
+    System.out.println("Pro License: " + leftShooterMotor.getIsProLicensed());
   }
 
   /**
@@ -40,7 +43,7 @@ public class Shooter extends SubsystemBase {
    */
   public void spinFlywheels(double speed){
     leftShooterMotor.set(speed);
-    rightShooterMotor.set(speed);
+    //rightShooterMotor.set(speed);
   }
 
   /**

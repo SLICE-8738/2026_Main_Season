@@ -85,11 +85,11 @@ public class ShooterCalculations {
         PoseEstimate robotPose;
         double[] hubXY = new double[2];
         if (DriverStation.getAlliance().get() == Alliance.Blue){
-            robotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue("SLICE LIMELIGHT"); // TODO: Add limelight name
+            robotPose = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-right"); // TODO: Add limelight name
             hubXY[0] = Units.metersToFeet(Constants.FieldConstants.BLUE_HUB.getX());
             hubXY[1] = Units.metersToFeet(Constants.FieldConstants.BLUE_HUB.getY());
         } else if (DriverStation.getAlliance().get() == Alliance.Red) { 
-            robotPose = LimelightHelpers.getBotPoseEstimate_wpiRed("SLICE LIMELIGHT");
+            robotPose = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight-right");
             hubXY[0] = Units.metersToFeet(Constants.FieldConstants.RED_HUB.getX());
             hubXY[1] = Units.metersToFeet(Constants.FieldConstants.RED_HUB.getY());
         } else {
