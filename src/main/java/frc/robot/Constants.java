@@ -30,9 +30,9 @@ public final class Constants {
   public static class ShooterConstants {
     
     //TODO: get actual motor ids
-    public static final int PIVOT_MOTOR_ID = 10;
-    public static final int LEFT_SHOOTER_MOTOR_ID = 12;
-    public static final int RIGHT_SHOOTER_MOTOR_ID = 11;
+    public static final int PIVOT_MOTOR_ID = 4;
+    public static final int LEFT_SHOOTER_MOTOR_ID = 3;
+    public static final int RIGHT_SHOOTER_MOTOR_ID = 2;
 
     //TODO: tune PIDs
     public static final double FLYWHEEL_KP = 0.0;
