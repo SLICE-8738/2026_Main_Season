@@ -68,7 +68,7 @@ public class Shooter extends SubsystemBase {
     VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
 
     leftShooterMotor.setControl(request.withVelocity(speed));
-    rightShooterMotor.setControl(request.withAcceleration(speed));
+    rightShooterMotor.setControl(request.withVelocity(speed));
 
   }
 
