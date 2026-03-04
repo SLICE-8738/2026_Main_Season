@@ -4,11 +4,14 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
@@ -23,6 +26,7 @@ public class SwerveModule {
     private TalonFX turningMotor;
 
     private AnalogEncoder rotationAnalogEncoder;
+    private Encoder integratedAnalogEncoder;
 
     private double chassisAngularOffset;
     private Rotation2d angularOffset;
@@ -30,20 +34,22 @@ public class SwerveModule {
 
     private SwerveModuleState desiredState = new SwerveModuleState(0, new Rotation2d());
 
-    public SwerveModule(int modNum, int driveCanID,int turnCanId, double chassisOffset, Rotation2d offset ){
+    public SwerveModule(int modNum, int driveCanID, int turnCanId,int encoderId, double chassisOffset, Rotation2d offset ){
         module_number = modNum;
         this.driveCanID = driveCanID;
         this.turnCanId = turnCanId;
+        angularOffset = offset;
 
         drivingMotor = new TalonFX(driveCanID);
         turningMotor = new TalonFX(turnCanId);
 
         drivingMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.m_swerveDriveConfigs);
         turningMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.m_swerveTurnConfigs);
+
         
+        rotationAnalogEncoder = new AnalogEncoder(encoderId, 360, 0); //TODO get channel
 
-
-     //   rotationAnalogEncoder = new AnalogEncoder(0, 360, 0); //TODO get channel
+        turningMotor.setPosition(turningMotor.getPosition().getValueAsDouble() - angularOffset.getDegrees());
 
     }
 
@@ -77,7 +83,7 @@ public class SwerveModule {
 
         turningMotor.setControl(positionRequest.withPosition(correctedDesiredState.angle.getRotations()));
 
-
+        //SmartDashboard.putNumber("Driving Encoder " + driveCanID, (rotationAnalogEncoder.get());
         
 
 
@@ -85,7 +91,20 @@ public class SwerveModule {
 
     }
 
+    public double getTurnRotation(){
+        return rotationAnalogEncoder.get();
+    }
+    
     // TODO : add a RESET ENCODERS METHOD
-
+    
+    /*
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Back Left " + drivingCanID, (m_drivingEncoder.getPosition() - m_offset.getRotations()));
+        SmartDashboard.putNumber("Encoder Angle "  + mod_number, m_intergratedTurningEncoder.getPosition());
+    }*/
+    
 
 }
+
+

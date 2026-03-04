@@ -11,16 +11,19 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
-
+  
   private final SwerveModule m_frontLeftModule = new SwerveModule(
    0,
    Constants.DriveConstants.FRONT_LEFT_DRIVE_ID, 
    Constants.DriveConstants.FRONT_LEFT_TURN_ID, 
+   Constants.DriveConstants.FRONT_LEFT_ENCODER_ID,
    Constants.DriveConstants.kFrontLeftChassisAngularOffset, 
    Constants.DriveConstants.kFrontLeftAngulatOffset);
 
@@ -28,6 +31,7 @@ public class DriveSubsystem extends SubsystemBase {
     1,
     Constants.DriveConstants.FRONT_RIGHT_DRIVE_ID,
     Constants.DriveConstants.FRONT_RIGHT_TURN_ID,
+    Constants.DriveConstants.FRONT_RIGHT_ENCODER_ID,
     Constants.DriveConstants.kFrontRightChassisAngularOffset, 
     Constants.DriveConstants.kFrontRightAngularOffset);
 
@@ -35,13 +39,15 @@ public class DriveSubsystem extends SubsystemBase {
     2, 
     Constants.DriveConstants.BACK_LEFT_DRIVE_ID, 
     Constants.DriveConstants.BACK_LEFT_TURN_ID, 
+    Constants.DriveConstants.BACK_LEFT_ENCODER_ID,
     Constants.DriveConstants.kRearLeftChassisAngularOffset, 
     Constants.DriveConstants.kRearLeftAngularOffset);
 
   private final SwerveModule m_backRightModule = new SwerveModule(3, 
   Constants.DriveConstants.BACK_RIGHT_DRIVE_ID, 
   Constants.DriveConstants.BACK_RIGHT_TURN_ID, 
-  Constants.DriveConstants.kRearRightChassisAngularOffset, 
+  Constants.DriveConstants.BACK_RIGHT_ENCODER_ID,
+  Constants.DriveConstants.kRearRightChassisAngularOffset,
   Constants.DriveConstants.kRearRightAngularOffset);
 
   //TODO add/fix Gyro
@@ -104,12 +110,31 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRightModule.setDesiredState(swerveModuleStates[1]);
     m_backRightModule.setDesiredState(swerveModuleStates[2]);
     m_backLeftModule.setDesiredState(swerveModuleStates[3]);
-
-   // System.out.println("Speed: " + m_frontLeftModule.getSwerveModuleState().speedMetersPerSecond + "Rot: " + m_backLeftModule.getSwerveModuleState().angle.getRadians());
+    
   }
+  public void setDutyCycle (double DrivePercent, double RotationPercent) {
+    m_backRightModule.setDutyCycle(DrivePercent, RotationPercent);
+    m_backLeftModule.setDutyCycle(DrivePercent, RotationPercent);
+    m_frontRightModule.setDutyCycle(DrivePercent, RotationPercent);
+    m_frontLeftModule.setDutyCycle(DrivePercent, RotationPercent);
+
+  }
+
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+   // SmartDashboard.putNumber("Front Left Rotation : ", m_frontLeftModule.getTurnRotation());
+    //SmartDashboard.putNumber("Front Right Rotation : ", m_frontRightModule.getTurnRotation());
+   // SmartDashboard.putNumber("Back Left Rotation : ", m_backLeftModule.getTurnRotation());
+   // SmartDashboard.putNumber("Back Right Rotation : ", m_backRightModule.getTurnRotation());
+    SmartDashboard.putNumber( "Back Left ROT: " , m_backLeftModule.getSwerveModuleState().angle.getDegrees());
+    SmartDashboard.putNumber( "Back Right ROT: " , m_backRightModule.getSwerveModuleState().angle.getDegrees());
+    SmartDashboard.putNumber( "Front Right ROT: " , m_frontRightModule.getSwerveModuleState().angle.getDegrees());
+    SmartDashboard.putNumber( "Front Left ROT: " , m_frontLeftModule.getSwerveModuleState().angle.getDegrees());
+
+
+    
+  }    
+  
   }
-}
+
