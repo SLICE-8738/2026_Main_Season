@@ -48,7 +48,7 @@ public class SwerveModule {
         angularOffset = offset;
         drivingMotor = new TalonFX(driveCanID);
         turningMotor = new TalonFX(turnCanId);
-
+        
         //rotation  = new AnalogInput(encoderId);
 
         drivingMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.m_swerveDriveConfigs);

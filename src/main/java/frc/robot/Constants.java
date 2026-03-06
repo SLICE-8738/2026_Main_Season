@@ -54,10 +54,10 @@ public final class Constants {
 
     //Angular offsets of the wheels
     //TODO find actual angle offsets
-    public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(23.7);
-    public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(218.1);
-    public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromDegrees(160);
-    public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromDegrees(201.7);
+    public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(291.6);
+    public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(172.8);
+    public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromDegrees(187.2);
+    public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromDegrees(183.6);
 
     // public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(0);
     // public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(0);
@@ -77,10 +77,10 @@ public final class Constants {
     
     /* Encoder IDs */
     // TODO GET ACTUAL CANCODER IDS
-    public static final int FRONT_LEFT_ENCODER_ID = 0;
-    public static final int FRONT_RIGHT_ENCODER_ID = 1;
-    public static final int BACK_LEFT_ENCODER_ID = 2;
-    public static final int BACK_RIGHT_ENCODER_ID = 3;
+    public static final int FRONT_LEFT_ENCODER_ID = 22;
+    public static final int FRONT_RIGHT_ENCODER_ID = 21;
+    public static final int BACK_LEFT_ENCODER_ID = 20;
+    public static final int BACK_RIGHT_ENCODER_ID = 23;
 
     /* Drivetrain Gear Ratios */
     public static final double DRIVE_GEAR_RATIO = (5.79 / 1.0); // 5.79:1
