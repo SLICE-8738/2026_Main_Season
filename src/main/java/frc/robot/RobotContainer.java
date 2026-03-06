@@ -31,8 +31,8 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
-  Trigger m_ResetEncoderFieldRelative = new JoystickButton(m_driverController, 7);
-
+  Trigger m_ResetEncoderFieldRelative = new JoystickButton(m_driverController, 8);
+  Trigger m_ResetGyro = new JoystickButton(m_driverController, 7);
 
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -72,6 +72,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     m_ResetEncoderFieldRelative.onTrue(new RunCommand(() -> m_robotDrive.resetEncoders(), m_robotDrive));
+    m_ResetGyro.onTrue(new RunCommand(() -> m_robotDrive.resetGyro(), m_robotDrive));
   }
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,

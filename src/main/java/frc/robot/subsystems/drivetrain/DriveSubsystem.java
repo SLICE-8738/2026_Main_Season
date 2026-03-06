@@ -143,34 +143,10 @@ public class DriveSubsystem extends SubsystemBase {
     m_backRightModule.resetEncoders();
   }
 
-   public Rotation2d getHeading() {
-
-    if (RobotBase.isReal()) {
-      return Rotation2d.fromDegrees(Constants.kDrivetrain.INVERT_GYRO? 
-        MathUtil.inputModulus((m_gyro.getYaw() - 180), 0 , 360) 
-        : MathUtil.inputModulus(m_gyro.getYaw().get - 180, 0, 360));
-    }
-    else {
-      SwerveModulePosition[] modulePositions = getModulePositions();
-      SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
-
-      for (SwerveModule mod : swerveMods) {
-        
-        moduleDeltas[mod.moduleNumber] = 
-          new SwerveModulePosition(
-            modulePositions[mod.moduleNumber].distanceMeters -
-              lastModulePositions[mod.moduleNumber].distanceMeters,
-            modulePositions[mod.moduleNumber].angle
-          );
-        lastModulePositions[mod.moduleNumber] = modulePositions[mod.moduleNumber];
-
-      }
-
-      simHeading = simHeading.plus(new Rotation2d(Constants.kDrivetrain.kSwerveKinematics.toTwist2d(moduleDeltas).dtheta));
-      return simHeading;
-    }
-
+  public void resetGyro(){
+    m_gyro.reset();
   }
+
 
 
   @Override
@@ -196,19 +172,5 @@ public class DriveSubsystem extends SubsystemBase {
     //SmartDashboard.putNumber( "Front Left ROT: " , m_frontLeftModule.getSwerveModuleState().angle.getDegrees());
   }    
   
-  public void resetFieldOrientedHeading() {
-
-    fieldOrientedOffset = getHeading().minus(Rotation2d.fromDegrees(180));
-    resetRotation(Rotation2d.fromDegrees(DriverStation.getAlliance().get() == Alliance.Blue? 180 : 0));
-
-  }
-  
-  public void reverseFieldOrientedHeading() {
-
-    fieldOrientedOffset = getHeading();
-    resetRotation(Rotation2d.fromDegrees(DriverStation.getAlliance().get() == Alliance.Blue? 0 : 180));
-
-  }
-  
-  }
+}
 
