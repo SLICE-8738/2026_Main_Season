@@ -20,11 +20,14 @@ import frc.slicelibs.configs.CTREConfigs;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-  public static final CTREConfigs CTRE_CONFIGS = new CTREConfigs();
-
-  public static class OperatorConstants {
+  public static class IOConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double kDriveDeadband = 0.05;
+  }
+  public static class IndexerConstants {
+    //TODO get motor IDs
+    public static final int STAGE_ONE_MOTOR_ID = 0;
+    public static final int STAGE_TWO_MOTOR_ID = 0;
   }
   
   public static class ShooterConstants {
