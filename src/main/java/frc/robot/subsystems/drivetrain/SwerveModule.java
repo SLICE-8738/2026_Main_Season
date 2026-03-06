@@ -66,7 +66,7 @@ public class SwerveModule {
 
         //turningMotor.setControl(initial.withPosition(Math.abs(rotationAnalogEncoder.get() * 360 - angularOffset.getDegrees())));
     
-        desiredState.angle = Rotation2d.fromRotations(rotationAnalogEncoder.getAbsolutePosition().getValueAsDouble() /* Constants.DriveConstants.ANGLE_GEAR_RATIO */);
+      //  desiredState.angle = Rotation2d.fromRotations(rotationAnalogEncoder.getAbsolutePosition().getValueAsDouble() /* Constants.DriveConstants.ANGLE_GEAR_RATIO */);
 
     }
 
@@ -129,7 +129,7 @@ public class SwerveModule {
     // TODO : add a RESET ENCODERS METHOD
 
     public void resetEncoders(){
-
+        turningMotor.setPosition(0);
     }
     
     /*

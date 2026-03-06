@@ -120,13 +120,20 @@ public class DriveSubsystem extends SubsystemBase {
     m_backLeftModule.setDesiredState(swerveModuleStates[3]);
     
   }
-  
+
   public void setDutyCycle (double DrivePercent, double RotationPercent) {
     m_backRightModule.setDutyCycle(DrivePercent, RotationPercent);
     m_backLeftModule.setDutyCycle(DrivePercent, RotationPercent);
     m_frontRightModule.setDutyCycle(DrivePercent, RotationPercent);
     m_frontLeftModule.setDutyCycle(DrivePercent, RotationPercent);
 
+  }
+
+  public void resetEncoders(){
+    m_frontLeftModule.resetEncoders();
+    m_backLeftModule.resetEncoders();
+    m_frontRightModule.resetEncoders();
+    m_backRightModule.resetEncoders();
   }
 
 

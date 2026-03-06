@@ -54,10 +54,10 @@ public final class Constants {
 
     //Angular offsets of the wheels
     //TODO find actual angle offsets
-    public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(291.6);
-    public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(172.8);
-    public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromDegrees(187.2);
-    public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromDegrees(183.6);
+    public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(292.68);
+    public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(172.44);
+    public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromDegrees(189.36);
+    public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromDegrees(187.56);
 
     // public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(0);
     // public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(0);
@@ -92,7 +92,7 @@ public final class Constants {
     public static final double DRIVE_KI = 0;
     public static final double DRIVE_KD = 0;
 
-    public static final double TURN_KP = 5.0;
+    public static final double TURN_KP = 6.789;
     public static final double TURN_KI = 0;
     public static final double TURN_KD = 0;
     

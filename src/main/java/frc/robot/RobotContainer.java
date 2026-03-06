@@ -26,10 +26,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+
+  Trigger m_ResetEncoderFieldRelative = new JoystickButton(m_driverController, 7);
 
 
   // The robot's subsystems and commands are defined here...
@@ -48,8 +50,11 @@ public class RobotContainer {
               MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband), //drive
               MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
               MathUtil.applyDeadband(m_driverController.getRawAxis(4), OIConstants.kDriveDeadband), //rotation
-                false),
+                true),
             m_robotDrive)); 
+
+
+            
 
   //new RunCommand( () -> m_robotDrive.setDutyCycle(0,.1),
   //    m_robotDrive));
@@ -65,9 +70,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+    m_ResetEncoderFieldRelative.onTrue(new RunCommand(() -> m_robotDrive.resetEncoders(), m_robotDrive));
   }
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
