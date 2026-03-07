@@ -67,15 +67,17 @@ public class CTREConfigs {
         shooterPID.kP = Constants.ShooterConstants.FLYWHEEL_KP;
         shooterPID.kI = Constants.ShooterConstants.FLYWHEEL_KI;
         shooterPID.kD = Constants.ShooterConstants.FLYWHEEL_KD;
+        //shooterPID.kS =
+        //shooterPID.kV = 510; //TODO tune
 
 
         var shooterLimits = shooterConfigs.CurrentLimits;
 
 
         var shooterRightPID = shooterRightConfigs.Slot0;
-        shooterPID.kP = Constants.ShooterConstants.FLYWHEEL_KP;
-        shooterPID.kI = Constants.ShooterConstants.FLYWHEEL_KI;
-        shooterPID.kD = Constants.ShooterConstants.FLYWHEEL_KD;
+        shooterRightPID.kP = Constants.ShooterConstants.FLYWHEEL_KP;
+        shooterRightPID.kI = Constants.ShooterConstants.FLYWHEEL_KI;
+        shooterRightPID.kD = Constants.ShooterConstants.FLYWHEEL_KD;
 
         var shooterRight = shooterRightConfigs.MotorOutput;
         shooterRight.Inverted = InvertedValue.Clockwise_Positive;
