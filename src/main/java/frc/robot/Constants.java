@@ -56,18 +56,10 @@ public final class Constants {
     public static final double kRearRightChassisAngularOffset = Math.PI / 2;
 
     //Angular offsets of the wheels
-    //TODO find actual angle offsets
     public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromRotations(0.514);
     public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromRotations(0.481);
     public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromRotations(0.521);
     public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromRotations(0.816);
-
-    
-
-    // public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(0);
-    // public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(0);
-    // public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromDegrees(0);
-    // public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromDegrees(0);
 
     /* MOTOR IDS */
     public static final int FRONT_LEFT_DRIVE_ID = 17;
@@ -81,7 +73,6 @@ public final class Constants {
     public static final int BACK_RIGHT_TURN_ID = 10;
     
     /* Encoder IDs */
-    // TODO GET ACTUAL CANCODER IDS
     public static final int FRONT_LEFT_ENCODER_ID = 23;
     public static final int FRONT_RIGHT_ENCODER_ID = 21;
     public static final int BACK_LEFT_ENCODER_ID = 20;
@@ -100,6 +91,13 @@ public final class Constants {
     public static final double TURN_KP = 20;
     public static final double TURN_KI = 0;
     public static final double TURN_KD = 0;
+
+    /* Drivetrain Current Limits */ //TODO maybe tune current limits
+    public static final double DRIVE_STATOR_CURRENT_LIMIT = 80;
+    public static final double DRIVE_SUPPLY_CURRENT_LIMIT = 40;
+
+    public static final double TURN_STATOR_CURRENT_LIMIT = 40;
+    public static final double TURN_SUPPLY_CURRENT_LIMIT = 30;
     
 
   }
