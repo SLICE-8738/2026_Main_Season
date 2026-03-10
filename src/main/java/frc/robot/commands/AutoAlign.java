@@ -4,9 +4,14 @@
 
 package frc.robot.commands;
 
+import static edu.wpi.first.units.Units.Rotation;
+
+import java.util.concurrent.BlockingDeque;
+
 import com.ctre.phoenix6.controls.PositionVoltage;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -16,60 +21,58 @@ import frc.robot.subsystems.drivetrain.DriveSubsystem;
 public class AutoAlign extends Command {
 
   private final DriveSubsystem m_drivesubsystem;
-
-  private boolean outOfFrame;
-
-  private boolean aligned;
   
+  private PIDController rotationController;
+
+  private boolean isOutofFrame = true;
 
   public AutoAlign(DriveSubsystem drivetrain) {
 
     m_drivesubsystem = drivetrain;
 
-    //create a PositionVoltage 
+    rotationController = new PIDController(21, 0, 0);
+  }
 
+  private boolean isInFrame() {
+    return LimelightHelpers.getTV("limelight-left");
+  }
+
+  private double getError() {
+    return LimelightHelpers.getTX("limelight-left");
+  }
+
+  private double getOutput() {
+    return rotationController.calculate(getError(),0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    outOfFrame = false;
-    aligned = false;
+  }
+
+  public boolean isOntarget() {
+    return Math.abs(getError()) > 5;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-
-    double rotation;
-    boolean n = LimelightHelpers.getTV("limelight");
-    
+  public void execute() {    
+    SmartDashboard.putBoolean("Target", isInFrame());
    // System.out.println("TV: " + n);
 
-    if (n) {
-      double XOffsetRotation = LimelightHelpers.getTX("limelight");
-
-    //  rotation = rotationController.calculate(XOffsetRotation);
-
-    //  System.out.println("Rotation:" + rotation);
-    // System.out.println("Rotation XOffset: " + XOffsetRotation);
-
-      if (Math.abs(XOffsetRotation) < 5) {
-        outOfFrame = true;
-        m_drivesubsystem.drive(0, 0, Constants.DriveConstants.kMaxAngularSpeed/2, false);
-      } else if (outOfFrame == false) {
+    if (isInFrame()) {
+      if (isOntarget()) {
+        isOutofFrame = false;
+        m_drivesubsystem.drive(0, 0,getOutput()+10,true);
+      } else {
         m_drivesubsystem.drive(0, 0, 0, true);
       }
     }
-    else if (outOfFrame == false) {
-      m_drivesubsystem.drive(0, 0, 0, true);
-
-      //rotation = 15 * (timer.get() + 3.5) * Math.sin(5 * (timer.get() + 3.5));
-    } else {
-      aligned = true;
+    else {
+      m_drivesubsystem.drive(0, 0, Constants.DriveConstants.kMaxAngularSpeed/16, true);
     }
-  }
 
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) { 
@@ -79,10 +82,9 @@ public class AutoAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-   if (aligned) {
-      return true;
-    } else {
-      return false;
-    }  }
+   return isOntarget();
+  }
 
+
+  
 }

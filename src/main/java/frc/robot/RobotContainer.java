@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Indexer.SpinStageOne;
@@ -60,6 +61,8 @@ public class RobotContainer {
 
   /* Drive Subsystem */
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+
+  private final AutoAlign m_Align = new AutoAlign(m_robotDrive);
 
   /*  Intake Subsystem & Commands */
   private final Intake m_Intake =  new Intake();
@@ -131,7 +134,7 @@ public class RobotContainer {
               MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband), //drive
               MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
               MathUtil.applyDeadband(m_driverController.getRawAxis(4), OIConstants.kDriveDeadband), //rotation
-              true),
+              false),
             m_robotDrive)
   );
 
@@ -167,6 +170,8 @@ public class RobotContainer {
     Buttons.controller1_BButton.whileTrue(m_RetractIntakeTimed);
 
     Buttons.controller1_minusButton.onTrue(new InstantCommand( ()->m_robotDrive.resetGyro(), m_robotDrive) );
+
+    Buttons.controller1_YButton.whileTrue(m_Align);
 
     
     //m_chooser.getSelected();
