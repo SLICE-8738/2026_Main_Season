@@ -21,6 +21,7 @@ public class Intake extends SubsystemBase {
   private double targetPosition;
 
   private boolean active; // Tells whether or not intake is active
+  // TODO maybe change to a method?
 
 
   /** Creates a new Intake. */

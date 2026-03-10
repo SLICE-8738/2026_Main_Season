@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -68,6 +67,8 @@ public class Shooter extends SubsystemBase {
 
     leftShooterMotor.setControl(request.withVelocity(speed));
     rightShooterMotor.setControl(request.withVelocity(speed));
+
+    // TODO change the VelocityVoltage to be more streamlined.
 
   }
 
