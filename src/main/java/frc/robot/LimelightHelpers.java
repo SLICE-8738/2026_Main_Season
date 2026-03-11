@@ -5,6 +5,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -988,5 +990,20 @@ public class LimelightHelpers {
         }
 
         return results;
+    }
+
+    public static void setAlignIDs() {
+        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+        int targetTagID;
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+            targetTagID = Constants.LimelightConstants.ALIGN_RED; // Example Red ID
+        } else {
+            targetTagID = Constants.LimelightConstants.ALIGN_BLUE; // Example Blue ID
+        }
+        LimelightHelpers.setPriorityTagID("limelight-left", targetTagID);
+    }
+
+    public static void resetLimelightIDs() {
+        LimelightHelpers.setPriorityTagID("limelight-left", -1);
     }
 }

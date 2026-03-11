@@ -34,6 +34,7 @@ public class AutoAlign extends Command {
   }
 
   private boolean isInFrame() {
+    LimelightHelpers.setAlignIDs();
     return LimelightHelpers.getTV("limelight-left");
   }
 
@@ -50,8 +51,12 @@ public class AutoAlign extends Command {
   public void initialize() {
   }
 
-  public boolean isOntarget() {
+  public boolean isOfftarget() {
     return Math.abs(getError()) > 5;
+  }
+
+  public boolean isOntarget() {
+    return Math.abs(getError()) < 5;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -61,9 +66,9 @@ public class AutoAlign extends Command {
    // System.out.println("TV: " + n);
 
     if (isInFrame()) {
-      if (isOntarget()) {
+      if (isOfftarget()) {
         isOutofFrame = false;
-        m_drivesubsystem.drive(0, 0,getOutput()+10,true);
+        m_drivesubsystem.drive(0, 0,getOutput(),true);
       } else {
         m_drivesubsystem.drive(0, 0, 0, true);
       }
@@ -82,6 +87,7 @@ public class AutoAlign extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    LimelightHelpers.resetLimelightIDs();
    return isOntarget();
   }
 

@@ -188,4 +188,9 @@ public final class Constants {
 
   }
 
+  public static class LimelightConstants {
+    public static final int ALIGN_RED = 25;
+    public static final int ALIGN_BLUE = 10;
+  }
+
 }
