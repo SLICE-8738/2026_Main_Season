@@ -35,7 +35,7 @@ public class AutoAlign extends Command {
   }
 
   private boolean isInFrame() {
-    LimelightHelpers.setAlignIDs();
+    LimelightHelpers.setAlignIDs(10,25);
     return LimelightHelpers.getTV("limelight-left");
   }
 

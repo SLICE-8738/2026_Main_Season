@@ -992,13 +992,18 @@ public class LimelightHelpers {
         return results;
     }
 
-    public static void setAlignIDs() {
+    /**
+     * 
+     * @param target1 - Blue Alliance ID
+     * @param target2 - Red Alliance ID
+     */
+    public static void setAlignIDs(int target1, int target2) {
         Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         int targetTagID;
         if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            targetTagID = Constants.LimelightConstants.ALIGN_RED; // Example Red ID
+            targetTagID = target1; // Example Red ID
         } else {
-            targetTagID = Constants.LimelightConstants.ALIGN_BLUE; // Example Blue ID
+            targetTagID = target2; // Example Blue ID
         }
         LimelightHelpers.setPriorityTagID("limelight-left", targetTagID);
     }

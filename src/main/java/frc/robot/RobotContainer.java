@@ -104,7 +104,7 @@ public class RobotContainer {
 
   /* Autos */
   // TODO improve auto
-  //Command autoCommand = new ShootAtHub(m_Shooter, m_Indexer);
+  Command autoCommand = new ShootAtHub(m_Shooter, m_Indexer);
     
   //new ParallelCommandGroup(m_ShootAtHub);
 
@@ -185,6 +185,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // TODO: improve autos
-    return null; //autoCommand;
+    return autoCommand;
   }
 }
