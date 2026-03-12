@@ -47,7 +47,7 @@ public class MoveIntakeTimed extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_Timer.get() >= 0.75){
+    if(m_Timer.get() >= 0.5){
       return true;
     }
     return false;

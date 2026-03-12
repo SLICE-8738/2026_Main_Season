@@ -38,8 +38,8 @@ public class CTREConfigs {
 
         
         var swerveDriveCurrent = m_swerveDriveConfigs.CurrentLimits;
-        swerveDriveCurrent.StatorCurrentLimit = 60;
-        swerveDriveCurrent.SupplyCurrentLimit = 40;
+        swerveDriveCurrent.StatorCurrentLimit = Constants.DriveConstants.DRIVE_STATOR_CURRENT_LIMIT;//80;
+        swerveDriveCurrent.SupplyCurrentLimit = Constants.DriveConstants.DRIVE_SUPPLY_CURRENT_LIMIT;//40;
         
 
 
@@ -54,15 +54,15 @@ public class CTREConfigs {
 
         
         var swerveTurnCurrent = m_swerveTurnConfigs.CurrentLimits;
-        swerveTurnCurrent.StatorCurrentLimit = 40;
-        swerveTurnCurrent.SupplyCurrentLimit = 30;
+        swerveTurnCurrent.StatorCurrentLimit = Constants.DriveConstants.TURN_STATOR_CURRENT_LIMIT;//40;
+        swerveTurnCurrent.SupplyCurrentLimit = Constants.DriveConstants.TURN_SUPPLY_CURRENT_LIMIT;//30;
 
 
         m_swerveTurnConfigs.Feedback.SensorToMechanismRatio = Constants.DriveConstants.ANGLE_GEAR_RATIO;
         m_swerveTurnConfigs.ClosedLoopGeneral.ContinuousWrap = true;
 
         //////////////////////////
-        /// Shooter Constants ////
+        /// Shooter Configs ////
         //////////////////////////
 
         /* Shooter PIDs */

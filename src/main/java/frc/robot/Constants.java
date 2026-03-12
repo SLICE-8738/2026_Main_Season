@@ -26,7 +26,7 @@ public final class Constants {
 
 
   public static class IndexerConstants {
-    //TODO get motor IDs
+    /* Indexer Motor IDs */
     public static final int STAGE_ONE_MOTOR_ID = 18;
     public static final int STAGE_TWO_MOTOR_ID = 1;
   }
@@ -58,18 +58,10 @@ public final class Constants {
     public static final double kRearRightChassisAngularOffset = Math.PI / 2;
 
     //Angular offsets of the wheels
-    //TODO find actual angle offsets
     public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromRotations(0.514);
     public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromRotations(0.481);
     public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromRotations(0.521);
     public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromRotations(0.816);
-
-    
-
-    // public static final Rotation2d kFrontLeftAngulatOffset = Rotation2d.fromDegrees(0);
-    // public static final Rotation2d kFrontRightAngularOffset = Rotation2d.fromDegrees(0);
-    // public static final Rotation2d kRearLeftAngularOffset = Rotation2d.fromDegrees(0);
-    // public static final Rotation2d kRearRightAngularOffset = Rotation2d.fromDegrees(0);
 
     /* MOTOR IDS */
     public static final int FRONT_LEFT_DRIVE_ID = 17;
@@ -83,7 +75,6 @@ public final class Constants {
     public static final int BACK_RIGHT_TURN_ID = 10;
     
     /* Encoder IDs */
-    // TODO GET ACTUAL CANCODER IDS
     public static final int FRONT_LEFT_ENCODER_ID = 23;
     public static final int FRONT_RIGHT_ENCODER_ID = 21;
     public static final int BACK_LEFT_ENCODER_ID = 20;
@@ -103,20 +94,13 @@ public final class Constants {
     public static final double TURN_KI = 0;
     public static final double TURN_KD = 0;
 
-    //TODO: Tune PathPlanner Values 
-   // public static final PathConstraints PATH_CONSTRAINTS = new PathConstraints(4.8, 6.5, 11, 12.5);
-    public static final double TRANSLATION_KP = 6.0;
-    public static final double ROTATION_KP = 4.0;
-  
+    /* Drivetrain Current Limits */ //TODO maybe tune current limits
+    public static final double DRIVE_STATOR_CURRENT_LIMIT = 80;
+    public static final double DRIVE_SUPPLY_CURRENT_LIMIT = 40;
 
-  }
-
-  public static final class AutoConstants {
-
-    /* Auto Alignment PIDs */
-    public static final double AUTO_ALIGN_KP = 1;
-    public static final double AUTO_ALIGN_KI = 0;
-    public static final double AUTO_ALIGN_KD = 0;
+    public static final double TURN_STATOR_CURRENT_LIMIT = 40;
+    public static final double TURN_SUPPLY_CURRENT_LIMIT = 30;
+    
 
   }
 
@@ -128,7 +112,6 @@ public final class Constants {
 
   public static class IntakeConstants {
 
-    //TODO find actual motor IDs
     public static final int ROTATION_MOTOR_ID = 6;
     public static final int EXTENDER_MOTOR_ID = 5;
 
@@ -161,8 +144,8 @@ public final class Constants {
     // Robot dimensions
     public static final double SHOOTER_HEIGHT = 1.7891; // Feet
     public static final double FLYWHEEL_RADIUS = 0.1667; // Feet
-    public static final double LIMELIGHT_ANGLE = 72.5; // TODO: Fill in degrees
-    public static final double LIMELIGHT_HEIGHT = 1.525; // TODO: Fill in feet
+    public static final double LIMELIGHT_ANGLE = 72.5; // Degrees
+    public static final double LIMELIGHT_HEIGHT = 1.525; // Feet
 
     // Maximums and minimums (Tune these)
     public static final double MAX_FLYWHEEL_VELOCITY = 35; // Feet per second

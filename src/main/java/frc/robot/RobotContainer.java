@@ -15,6 +15,7 @@ import frc.robot.commands.Indexer.SpinStageTwoManual;
 import frc.robot.commands.Intake.IntakeFuel;
 import frc.robot.commands.Intake.IntakeFuelTimed;
 import frc.robot.commands.Intake.MoveIntakeManual;
+import frc.robot.commands.Intake.OscillateIntake;
 import frc.robot.commands.Intake.RetractIntakeTimed;
 import frc.robot.commands.Intake.RotateIntake;
 import frc.robot.commands.Intake.RotateIntakeManual;
@@ -97,6 +98,7 @@ public class RobotContainer {
   /* Sequence & Parallel Commands */
   private final IntakeFuelTimed m_IntakeFuelTimed = new IntakeFuelTimed(m_Intake, m_Indexer);
   private final RetractIntakeTimed m_RetractIntakeTimed = new RetractIntakeTimed(m_Intake, m_Indexer);
+  private final OscillateIntake m_OscillateIntake = new OscillateIntake(m_Intake, m_Indexer);
   // TODO get positional Intake stuff working
   //private final IntakeFuel m_IntakeFuel = new IntakeFuel(m_Intake, m_Indexer);
 
