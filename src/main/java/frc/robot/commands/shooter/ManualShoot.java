@@ -5,6 +5,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
 
@@ -12,10 +13,10 @@ import frc.robot.subsystems.Shooter;
 public class ManualShoot extends Command {
 
   private Shooter m_Shooter;
-  private PS4Controller m_Controller;
+  private XboxController m_Controller;
 
   /** Creates a new ManualShoot. */
-  public ManualShoot(Shooter shooter, PS4Controller controller) {
+  public ManualShoot(Shooter shooter, XboxController controller) {
     m_Shooter = shooter;
     m_Controller = controller;
     addRequirements(m_Shooter);

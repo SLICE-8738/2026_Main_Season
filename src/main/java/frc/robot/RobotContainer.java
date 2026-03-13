@@ -14,6 +14,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.StadiaController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -29,7 +30,7 @@ public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
 
-  public PS4Controller m_driverController = new PS4Controller(0);
+  public XboxController m_driverController = new XboxController(0);
 
   public Shooter m_Shooter = new Shooter();
   public Trigger preFire = new Trigger(() -> m_Shooter.isHubAlmostActive());

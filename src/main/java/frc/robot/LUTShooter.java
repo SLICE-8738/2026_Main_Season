@@ -43,6 +43,7 @@ public class LUTShooter {
     public static double distanceFromHub(){
         double distance = -1; // Default value if limelight is not found.
         if (!LimelightHelpers.getTV("limelight-shooter")){ // If the limelight is not found...
+            System.out.println("Couldn't find distance");
             return distance; // Return -1.
         }
 
@@ -51,6 +52,7 @@ public class LUTShooter {
 
         distance = (Constants.FieldConstants.HUB_APRILTAG_HEIGHT - Constants.ShooterConstants.LIMELIGHT_HEIGHT) / Math.tan(angleToGoal); // Find the distance using trig
         
+        System.out.println("Distance is " + distance);
         return distance;
     }
 

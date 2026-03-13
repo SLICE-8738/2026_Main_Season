@@ -29,7 +29,7 @@ public class PivotShooter extends Command {
     double distance = LUTShooter.distanceFromHub(); 
     if (distance == -1) return; // If the distance to the hub is not found, return.
     double[] result = LUTShooter.calculateShooter(distance);
-    mainShooter.pivotShooterToPosition(result[0]);
+    mainShooter.pivotShooterToPosition(result[0] * 360);
   }
 
   // Called once the command ends or is interrupted.
