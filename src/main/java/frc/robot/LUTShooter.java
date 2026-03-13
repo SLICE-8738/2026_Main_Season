@@ -54,8 +54,8 @@ public class LUTShooter {
 
         distance = (Constants.FieldConstants.HUB_APRILTAG_HEIGHT - Constants.ShooterConstants.LIMELIGHT_HEIGHT) / Math.tan(angleToGoal); // Find the distance using trig
         
-        System.out.println("Distance is " + distance);
-        return distance;
+        System.out.println("Distance is " + Units.metersToFeet(distance));
+        return Math.abs(distance);
     }
 
     /**
@@ -66,6 +66,7 @@ public class LUTShooter {
     public static double[] calculateShooter(double hub_distance){
         double[] result = {linearInterpolate(DISTANCE_LUT, ANGLE_LUT, Units.metersToFeet(hub_distance)), linearInterpolate(DISTANCE_LUT, VELOCITY_LUT, Units.metersToFeet(hub_distance))};
         result[1] = (result[1] * 0.3048) / (2 * Math.PI * Constants.ShooterConstants.FLYWHEEL_RADIUS); // Convert ft/s to m/s then rot/s
+        System.out.println("Velocity is " + result[1]);
         return result;
     }
 }

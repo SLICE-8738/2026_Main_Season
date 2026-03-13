@@ -32,13 +32,13 @@ public class SpinFlywheels extends Command {
     if (distance == -1) return; // If the distance to the hub is not found, return.
     double[] result = LUTShooter.calculateShooter(distance);
     mainShooter.speedUpFlywheels(result[1]);
-
-  }
+    //mainShooter.speedUpFlywheels(22);
+  } 
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    mainShooter.spinFlywheels(0);
+    mainShooter.speedUpFlywheels(0);
   }
 
   // Returns true when the command should end.
