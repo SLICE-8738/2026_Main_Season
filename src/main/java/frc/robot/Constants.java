@@ -52,7 +52,7 @@ public final class Constants {
     public static final double SHOOTER_HEIGHT = 1.7891; // Feet
     public static final double FLYWHEEL_RADIUS = Units.inchesToMeters(2); // Inches
     public static final double LIMELIGHT_ANGLE = 72.5; // TODO: Fill in degrees
-    public static final double LIMELIGHT_HEIGHT = 1.525; // TODO: Fill in feet
+    public static final double LIMELIGHT_HEIGHT = Units.feetToMeters(1.525); // TODO: Fill in feet
 
     // Errors //
     public static final double FLYWHEEL_RPM_ACCEPTABLE_ERROR = 2; // The maximum error allowed in the flywheel RPM
