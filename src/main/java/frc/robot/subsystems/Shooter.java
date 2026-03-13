@@ -37,7 +37,7 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
     rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
 
-    System.out.println("Pro License: " + leftShooterMotor.getIsProLicensed());
+    //System.out.println("Pro License: " + leftShooterMotor.getIsProLicensed());
   }
 
   /**

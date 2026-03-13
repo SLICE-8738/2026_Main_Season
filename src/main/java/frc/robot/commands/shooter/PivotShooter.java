@@ -26,9 +26,10 @@ public class PivotShooter extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double distance = LUTShooter.distanceFromHub();
+    double distance = LUTShooter.distanceFromHub(); 
+    if (distance == -1) return; // If the distance to the hub is not found, return.
     double[] result = LUTShooter.calculateShooter(distance);
-    mainShooter.pivotShooterToPosition(result[0] * 2 * Math.PI);
+    mainShooter.pivotShooterToPosition(result[0]);
   }
 
   // Called once the command ends or is interrupted.

@@ -29,6 +29,7 @@ public class SpinFlywheels extends Command {
   @Override
   public void execute() {
     double distance = LUTShooter.distanceFromHub();
+    if (distance == -1) return; // If the distance to the hub is not found, return.
     double[] result = LUTShooter.calculateShooter(distance);
     mainShooter.speedUpFlywheels(result[1]);
 

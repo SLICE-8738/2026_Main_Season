@@ -27,6 +27,7 @@ public class ReadyShooter extends Command {
   @Override
   public void execute() {
     double distance = LUTShooter.distanceFromHub();
+    if (distance == -1) return; // If the distance to the hub is not found, return.
     double[] result = LUTShooter.calculateShooter(distance);
     m_shooter.speedUpFlywheels(result[1]); // Spin up flywheels 4 seconds before hub active
   }
