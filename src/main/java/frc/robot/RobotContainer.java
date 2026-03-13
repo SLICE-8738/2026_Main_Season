@@ -85,7 +85,7 @@ public class RobotContainer {
 
   // TODO fix up shooter calculations; SIMPLIFY
   //private final ManualShoot m_ManualShoot = new ManualShoot(m_Shooter, m_driverController);
-  //private final ReadyShooter m_ReadyShooter = new ReadyShooter(m_Shooter);
+  private final ReadyShooter m_ReadyShooter = new ReadyShooter(m_Shooter);
   //private final Shoot m_Shoot = new Shoot(m_Shooter);
 
   private final ShootAtHub m_ShootAtHub = new ShootAtHub(m_Shooter, m_Indexer);
@@ -112,11 +112,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    /*
-    * TODO figure out how to ready shooter 4 secs before active shift
     Trigger preFire = new Trigger(() -> m_Shooter.isHubAlmostActive());
     preFire.onTrue(m_ReadyShooter);
-    */
+    
    // m_chooser.setDefaultOption("Simple Auto", autoCommand);
    // m_ResetGyro.onTrue(new RunCommand(() -> m_robotDrive.resetGyro(), m_robotDrive));
 

@@ -20,6 +20,5 @@ public class Shoot extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new PivotShooter(mainShooter), new SpinFlywheels(mainShooter));
-    addCommands(new PivotShooter(mainShooter), new SpinFlywheels(mainShooter));
   }
 }
