@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /** Add your docs here. */
 public class LUTShooter {
     // Look up tables for angle, velocity, and distance 
@@ -62,7 +64,7 @@ public class LUTShooter {
      * @return An array of (degrees, rot/s)
      */
     public static double[] calculateShooter(double hub_distance){
-        double[] result = {linearInterpolate(DISTANCE_LUT, ANGLE_LUT, hub_distance), linearInterpolate(DISTANCE_LUT, VELOCITY_LUT, hub_distance)};
+        double[] result = {linearInterpolate(DISTANCE_LUT, ANGLE_LUT, Units.metersToFeet(hub_distance)), linearInterpolate(DISTANCE_LUT, VELOCITY_LUT, Units.metersToFeet(hub_distance))};
         result[1] = (result[1] * 0.3048) / (2 * Math.PI * Constants.ShooterConstants.FLYWHEEL_RADIUS); // Convert ft/s to m/s then rot/s
         return result;
     }
