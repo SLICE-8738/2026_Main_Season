@@ -162,7 +162,7 @@ public class RobotContainer {
 
     //Buttons.controller1_leftBumper.whileTrue(m_IntakeFuelTimed); TODO uncomment if needed
     Buttons.controller1_RightTrigger.whileTrue(m_ShootAtHub);
-    Buttons.controller1_rightBumper.whileTrue(m_ShootAtHub);
+    //Buttons.controller1_rightBumper.whileTrue(m_ShootAtHub);
 
     Buttons.controller1_AButton.whileTrue(m_IntakeFuelTimed);
     Buttons.controller1_BButton.whileTrue(m_RetractIntakeTimed);

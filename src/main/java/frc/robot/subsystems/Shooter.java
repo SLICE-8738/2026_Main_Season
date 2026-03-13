@@ -13,6 +13,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,7 +23,6 @@ import frc.robot.LimelightHelpers.PoseEstimate;
 public class Shooter extends SubsystemBase {
 
   private TalonFX pivotMotor, leftShooterMotor, rightShooterMotor;
-  //private Encoder pivotEncoder, leftEncoder, rightEncoder;
 
   private double targetSpeed, targetPosition;
 
@@ -78,9 +78,9 @@ public class Shooter extends SubsystemBase {
   public void pivotShooterToPosition(double position){
     targetPosition = position;
 
-    PositionVoltage request = new PositionVoltage(position); 
+    PositionVoltage request = new PositionVoltage(0); 
 
-    pivotMotor.setControl(request.withPosition(position)); 
+    pivotMotor.setControl(request.withPosition(targetPosition)); 
 
   }
 
@@ -227,5 +227,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    System.out.println("Supposed velocity: " + leftShooterMotor.getVelocity());
   }
 }
