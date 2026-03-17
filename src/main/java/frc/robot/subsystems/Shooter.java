@@ -6,103 +6,102 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 
-import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.LimelightHelpers;
-import frc.robot.ShooterCalculations;
-import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.Constants.ShooterConstants.FullShooterParams;
+import frc.slicelibs.TalonFXPositionalSubsystem;
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends TalonFXPositionalSubsystem {
 
-  private TalonFX pivotMotor, leftShooterMotor, rightShooterMotor;
-  //private Encoder pivotEncoder, leftEncoder, rightEncoder;
+  private TalonFX leftShooterMotor, rightShooterMotor;
 
   private double targetSpeed, targetPosition;
 
   /** Creates a new Shooter. */
   public Shooter() {
-    // Define the motors for pivoting the shooter and the flywheels.
-    pivotMotor = new TalonFX(Constants.ShooterConstants.PIVOT_MOTOR_ID);
+    
+    super(
+      new int[] { Constants.ShooterConstants.PIVOT_MOTOR_ID },
+      new boolean[] { true },
+      Constants.ShooterConstants.AIM_KP, Constants.ShooterConstants.AIM_KI, Constants.ShooterConstants.AIM_KD, Constants.ShooterConstants.AIM_KG,
+      Constants.ShooterConstants.PIVOT_GEAR_RATIO,
+      GravityTypeValue.Arm_Cosine,
+      Constants.ShooterConstants.POSITION_CONVERSION_FACTOR,
+      Constants.ShooterConstants.VELOCITY_CONVERSION_FACTOR,
+      Constants.CTRE_CONFIGS.pivotConfigs
+    );
+    setEncoderPosition(Constants.ShooterConstants.SHOOTER_STOW); // 12 degree from ground stow angle
+
+    // Define the motors for spinning the flywheels.
     leftShooterMotor = new TalonFX(Constants.ShooterConstants.LEFT_SHOOTER_MOTOR_ID);
     rightShooterMotor = new TalonFX(Constants.ShooterConstants.RIGHT_SHOOTER_MOTOR_ID);
 
     // Set the motor configs.
     leftShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
-    rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterRightConfigs);
-
+    rightShooterMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.shooterConfigs);
   }
 
-  /**
-   * Sets the flywheels to spin at a certain speed.
-   * @param speed The speed to set (a value between -1.0 and 1.0)
-   */
-  public void spinFlywheels(double speed){
+  // Set flywheels to a specific speed
+  public void spinFlywheels(double speed) {
     leftShooterMotor.set(speed);
-    //rightShooterMotor.set(speed);
+    rightShooterMotor.set(speed);
   }
 
-  /**
-   * Sets the pivot to a certain speed.
-   * @param speed The speed to set (a value between -1.0 and 1.0)
-   */
-  public void pivotShooter(double speed){
-    pivotMotor.set(speed);
+  // Move shooter hood to a position
+  public void pivotShooter(double angle) {
+    setPosition(angle);
   }
 
-  /**
-   * Accelerates the flywheels to a certain speed.
-   * @param speed The speed to spin at in rotations per second.
-   */
-  public void speedUpFlywheels(double speed){
-    targetSpeed = speed;
-    
-    VelocityVoltage request = new VelocityVoltage(0).withSlot(0);
-
-    leftShooterMotor.setControl(request.withVelocity(speed));
-    rightShooterMotor.setControl(request.withVelocity(speed));
-
-    // TODO change the VelocityVoltage to be more streamlined.
-
+  public double getHorizontalVelocity(double distance) {
+    FullShooterParams params = Constants.ShooterConstants.SHOOTER_MAP.get(distance);
+    return distance / params.tof();
   }
 
-  /**
-   * Set the shooter's pivot motor to a specific angle.
-   * @param position The position to set in rotations.
-   */
-  public void pivotShooterToPosition(double position){
-    targetPosition = position;
+  public void calculateShot(double distance, double requiredVelocity) {
+    FullShooterParams baseline = Constants.ShooterConstants.SHOOTER_MAP.get(distance);
+    double baselineVelocity = distance / baseline.tof();
+    double velocityRatio = requiredVelocity / baselineVelocity;
 
-    PositionVoltage request = new PositionVoltage(position); 
+    // Split the correction: sqrt gives equal "contribution" from each
+    double rpmFactor = Math.sqrt(velocityRatio);
+    double hoodFactor = Math.sqrt(velocityRatio);
 
-    pivotMotor.setControl(request.withPosition(position)); 
+    // Apply RPM scaling
+    double adjustedRpm = baseline.rpm() * rpmFactor;
 
+    // Apply hood adjustment (changes horizontal component)
+    double totalVelocity = baselineVelocity / Math.cos(Math.toRadians(baseline.hoodAngle()));
+    double targetHorizFromHood = baselineVelocity * hoodFactor;
+    double ratio = MathUtil.clamp(targetHorizFromHood / totalVelocity, 0.0, 1.0);
+    double adjustedHood = Math.toDegrees(Math.acos(ratio));
+
+    targetSpeed = adjustedRpm;
+    targetPosition = adjustedHood;
   }
 
-  /**
-   * Check if the motor is at a specific speed.
-   * @param error How much error is allowed to be considered "at speed."
-   * @return Returns whether or not the motor is at speed.
-   */
-  public boolean atTargetSpeed(double error){
-    double currentSpeed = leftShooterMotor.getVelocity().getValueAsDouble();
-    currentSpeed += rightShooterMotor.getVelocity().getValueAsDouble() / 2;
-    if(Math.abs(targetSpeed - currentSpeed) >= error){
-      return true;
-    }
-    return false;
+  public double getFlywheelSpeed() {
+    return (leftShooterMotor.getVelocity().getValueAsDouble() + rightShooterMotor.getVelocity().getValueAsDouble()) / 2;
   }
 
-  /**
-   * Determines if the hub is active (from WPILib website)
-   * @return Returns if the hub is active or not
-   */
+  public double getPivotPosition() {
+    return getPositions()[0];
+  }
+
+  
+  public boolean atTargetSpeed() {
+    return Math.abs(targetSpeed - getFlywheelSpeed()) <= Constants.ShooterConstants.FLYWHEEL_RPM_ACCEPTABLE_ERROR;
+  }
+
+  public boolean atTargetPosition() {
+    return Math.abs(targetPosition - getPivotPosition()) <= (Constants.ShooterConstants.VERTICAL_AIM_ACCEPTABLE_ERROR * (Math.PI / 180));
+  }
+
+  // Determines if the hub is active
   public boolean isHubActive() {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     // If we have no alliance, we cannot be enabled, therefore no hub.
@@ -135,7 +134,7 @@ public class Shooter extends SubsystemBase {
       }
     }
 
-    // Shift was is active for blue if red won auto, or red if blue won auto.
+    // Shift is active for blue if red won auto, or red if blue won auto.
     boolean shift1Active = switch (alliance.get()) {
       case Red -> !redInactiveFirst;
       case Blue -> redInactiveFirst;
@@ -162,10 +161,7 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  /**
-   * Determines if the hub is 4 seconds from active (from WPILib website)
-   * @return Returns if the hub is 4 seconds from active or not
-   */
+  // Determines if the hub is 4 seconds from active
   public boolean isHubAlmostActive() {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     // If we have no alliance, we cannot be enabled, therefore no hub.

@@ -17,18 +17,28 @@ public class Indexer extends SubsystemBase {
 
   /** Creates a new Indexer. */
   public Indexer() {
+    // Define the motors
     stageOneMotor = new TalonFX(Constants.IndexerConstants.STAGE_ONE_MOTOR_ID);
     stageTwoMotor = new TalonFX(Constants.IndexerConstants.STAGE_TWO_MOTOR_ID);
+    
+    // Set the motor configs
+    stageOneMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.indexerConfigs);
+    stageTwoMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.indexerConfigs);
+
   }
 
-  public void moveStageOneMotor(double speed) {
+  public void runStageOneMotor(double speed) {
     stageOneMotor.set(speed);
   }
    
-  public void moveStageTwoMotor(double speed) {
+  public void runStageTwoMotor(double speed) {
     stageTwoMotor.set(speed);
   }
 
+  public void stopAll(){
+    stageOneMotor.set(0.0);
+    stageTwoMotor.set(0.0);
+  }
 
   @Override
   public void periodic() {
