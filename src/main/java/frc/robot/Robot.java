@@ -4,6 +4,15 @@
 
 package frc.robot;
 
+import java.util.logging.Logger;
+
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -48,7 +57,26 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+
+    switch (Constants.ADVANTAGE_KIT_MODE) {
+      case REAL: 
+        //Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        new PowerDistribution(23, ModuleType.kRev); // Enables power distribution logging
+        break;
+      case SIM:
+        // Running simulation code, log to NT
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+      case REPLAY: 
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+        Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+        break;
+  }
 
   @Override
   public void disabledPeriodic() {}
