@@ -26,15 +26,24 @@ public class AutoAlign extends Command {
   private final DriveSubsystem m_drivesubsystem;
   private final XboxController m_controller;
   
-  private PIDController rotationController;
+  private PIDController rotationDriveController;
+  private PIDController rotationAlignController; 
 
   public AutoAlign(DriveSubsystem drivetrain, XboxController controller) {
 
     m_drivesubsystem = drivetrain;
     m_controller = controller;
 
-    rotationController = new PIDController(Constants.AutoConstants.AUTO_ALIGN_KP, 
+    rotationDriveController = new PIDController(Constants.AutoConstants.AUTO_ALIGN_KP, 
       Constants.AutoConstants.AUTO_ALIGN_KI, Constants.AutoConstants.AUTO_ALIGN_KD);
+
+    rotationDriveController.enableContinuousInput(0, 360);
+
+    rotationAlignController = new PIDController(Constants.AutoConstants.AUTO_ALIGN_HIDDEN_KP, Constants.AutoConstants.AUTO_ALIGN_HIDDEN_KI, Constants.AutoConstants.AUTO_ALIGN_HIDDEN_KD);
+
+    rotationAlignController.enableContinuousInput(0, 360);
+
+
   }
 
   private boolean isInFrame() {
@@ -43,13 +52,16 @@ public class AutoAlign extends Command {
   }
 
   private double getError() {
-    System.out.println(LimelightHelpers.getTX("limelight-shooter"));
+  //  System.out.println(LimelightHelpers.getTX("limelight-shooter"));
     return LimelightHelpers.getTX("limelight-shooter");
   }
 
-  public double 
-  getOutput() {
-    return rotationController.calculate(getError(),0);
+  public double getOutputDriving() {
+    return rotationDriveController.calculate(getError(),-10);
+  }
+
+  public double getOutputRotation() {
+    return rotationAlignController.calculate(getError(), -10);
   }
 
   // Called when the command is initially scheduled.
@@ -58,11 +70,11 @@ public class AutoAlign extends Command {
   }
 
   public boolean isOfftarget() {
-    return Math.abs(getError()) > .7;
+    return Math.abs(getError()) > .5;
   }
 
   public boolean isOntarget() {
-    return Math.abs(getError()) < .7;
+    return Math.abs(getError()) < .5;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -77,15 +89,15 @@ public class AutoAlign extends Command {
         m_drivesubsystem.drive(
               MathUtil.applyDeadband(m_controller.getRawAxis(1), OIConstants.kDriveDeadband), //drive
               MathUtil.applyDeadband(m_controller.getRawAxis(0), OIConstants.kDriveDeadband),
-              MathUtil.applyDeadband(getOutput(), OIConstants.kDriveDeadband), //rotation
+              MathUtil.applyDeadband(getOutputDriving(), OIConstants.kDriveDeadband), //rotation
               true);
       } else {
         m_drivesubsystem.drive(0, 0, 0, true);
       }
     }
-    else {
-      m_drivesubsystem.drive(0, 0, Constants.DriveConstants.kMaxAngularSpeed/25, true);
-    }
+     else {
+       m_drivesubsystem.drive(0, 0, getOutputRotation(), true);
+     }
 
   }
   // Called once the command ends or is interrupted.

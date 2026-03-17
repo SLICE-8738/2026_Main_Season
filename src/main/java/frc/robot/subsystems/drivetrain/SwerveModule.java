@@ -68,7 +68,7 @@ public class SwerveModule {
     
       //  desiredState.angle = Rotation2d.fromRotations(rotationAnalogEncoder.getAbsolutePosition().getValueAsDouble() /* Constants.DriveConstants.ANGLE_GEAR_RATIO */);
 
-        System.out.println("Instantiating " + module_number + " swerve module");
+      //  System.out.println("Instantiating " + module_number + " swerve module");
 
     }
 
