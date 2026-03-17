@@ -11,22 +11,27 @@ import java.util.concurrent.BlockingDeque;
 import com.ctre.phoenix6.controls.PositionVoltage;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import edu.wpi.first.math.MathUtil;
+import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.drivetrain.DriveSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoAlign extends Command {
 
   private final DriveSubsystem m_drivesubsystem;
+  private final XboxController m_controller;
   
   private PIDController rotationController;
 
-  public AutoAlign(DriveSubsystem drivetrain) {
+  public AutoAlign(DriveSubsystem drivetrain, XboxController controller) {
 
     m_drivesubsystem = drivetrain;
+    m_controller = controller;
 
     rotationController = new PIDController(Constants.AutoConstants.AUTO_ALIGN_KP, 
       Constants.AutoConstants.AUTO_ALIGN_KI, Constants.AutoConstants.AUTO_ALIGN_KD);
@@ -69,13 +74,17 @@ public class AutoAlign extends Command {
 
     if (isInFrame()) {
       if (isOfftarget()) {
-        m_drivesubsystem.drive(0, 0,getOutput(),true);
+        m_drivesubsystem.drive(
+              MathUtil.applyDeadband(m_controller.getRawAxis(1), OIConstants.kDriveDeadband), //drive
+              MathUtil.applyDeadband(m_controller.getRawAxis(0), OIConstants.kDriveDeadband),
+              MathUtil.applyDeadband(getOutput(), OIConstants.kDriveDeadband), //rotation
+              true);
       } else {
         m_drivesubsystem.drive(0, 0, 0, true);
       }
     }
     else {
-      m_drivesubsystem.drive(0, 0, Constants.DriveConstants.kMaxAngularSpeed/32, true);
+      m_drivesubsystem.drive(0, 0, Constants.DriveConstants.kMaxAngularSpeed/25, true);
     }
 
   }

@@ -65,7 +65,7 @@ public class RobotContainer {
   /* Drive Subsystem */
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
-  private final AutoAlign m_Align = new AutoAlign(m_robotDrive);
+  private final AutoAlign m_Align = new AutoAlign(m_robotDrive, m_driverController);
 
   /*  Intake Subsystem & Commands */
   private final Intake m_Intake =  new Intake();
@@ -177,6 +177,8 @@ public class RobotContainer {
     Buttons.controller1_AButton.whileTrue(m_IntakeFuelTimed);
     Buttons.controller1_BButton.whileTrue(m_RetractIntakeTimed);
 
+    Buttons.controller1_YButton.whileTrue(m_Align);
+
     Buttons.controller1_minusButton.onTrue(new InstantCommand( ()->m_robotDrive.resetGyro(), m_robotDrive) );
 
     Buttons.controller1_YButton.whileTrue(    
@@ -188,15 +190,6 @@ public class RobotContainer {
                true),
             m_robotDrive)
       );
-
-    Buttons.controller1_YButton.onFalse(new RunCommand(  
-            () -> m_robotDrive.drive(
-              MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband), //drive
-              MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
-              MathUtil.applyDeadband(m_driverController.getRawAxis(4), OIConstants.kDriveDeadband), //rotation
-              true),
-            m_robotDrive));
-
     
     //m_chooser.getSelected();
   }
