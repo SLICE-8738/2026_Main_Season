@@ -100,7 +100,8 @@ public final class Constants {
 
     /* Current Limits */
     public static final double DRIVE_STATOR_CURRENT_LIMIT = 80;
-    public static final double DRIVE_SUPPLY_CURRENT_LIMIT = 40;
+
+    public static final double DRIVE_SUPPLY_CURRENT_LIMIT = 60;
     public static final double TURN_STATOR_CURRENT_LIMIT = 40;
     public static final double TURN_SUPPLY_CURRENT_LIMIT = 30;
 
@@ -125,23 +126,31 @@ public final class Constants {
     /* Per-module constants (drive ID, turn ID, CANcoder ID, angle offset) */
     public static final frc.slicelibs.configs.SwerveModuleConstants FRONT_LEFT_MODULE =
         new frc.slicelibs.configs.SwerveModuleConstants(
-            FRONT_LEFT_DRIVE_ID, FRONT_LEFT_TURN_ID, FRONT_LEFT_ENCODER_ID,
-            Rotation2d.fromDegrees(0.0)); // TODO: Set real offsets
+            FRONT_LEFT_DRIVE_ID, 
+            FRONT_LEFT_TURN_ID, 
+            FRONT_LEFT_ENCODER_ID,
+            Rotation2d.fromRotations(0.513672)); // TODO: Set real offsets
 
     public static final frc.slicelibs.configs.SwerveModuleConstants FRONT_RIGHT_MODULE =
         new frc.slicelibs.configs.SwerveModuleConstants(
-            FRONT_RIGHT_DRIVE_ID, FRONT_RIGHT_TURN_ID, FRONT_RIGHT_ENCODER_ID,
-            Rotation2d.fromDegrees(0.0)); // TODO: Set real offsets
+            FRONT_RIGHT_DRIVE_ID, 
+            FRONT_RIGHT_TURN_ID, 
+            FRONT_RIGHT_ENCODER_ID,
+            Rotation2d.fromRotations(0.479492)); // TODO: Set real offsets
 
     public static final frc.slicelibs.configs.SwerveModuleConstants BACK_RIGHT_MODULE =
         new frc.slicelibs.configs.SwerveModuleConstants(
-            BACK_RIGHT_DRIVE_ID, BACK_RIGHT_TURN_ID, BACK_RIGHT_ENCODER_ID,
-            Rotation2d.fromDegrees(0.0)); // TODO: Set real offsets
+            BACK_RIGHT_DRIVE_ID, 
+            BACK_RIGHT_TURN_ID, 
+            BACK_RIGHT_ENCODER_ID,
+            Rotation2d.fromRotations(0.479492)); // TODO: Set real offsets
 
     public static final frc.slicelibs.configs.SwerveModuleConstants BACK_LEFT_MODULE =
         new frc.slicelibs.configs.SwerveModuleConstants(
-            BACK_LEFT_DRIVE_ID, BACK_LEFT_TURN_ID, BACK_LEFT_ENCODER_ID,
-            Rotation2d.fromDegrees(0.0)); // TODO: Set real offsets
+            BACK_LEFT_DRIVE_ID, 
+            BACK_LEFT_TURN_ID, 
+            BACK_LEFT_ENCODER_ID,
+            Rotation2d.fromRotations(0.520996)); // TODO: Set real offsets
 
   }
 
@@ -157,7 +166,7 @@ public final class Constants {
     public static final int EXTENDER_MOTOR_ID = 5;
 
     // Positional subsystem constants
-    public static final double EXTENDER_KP = 0.2;
+    public static final double EXTENDER_KP = 2.67;
     public static final double EXTENDER_KI = 0.0;
     public static final double EXTENDER_KD = 0.0;
     public static final double EXTENDER_KG = 0.0; // FF for gravity, most likely don't need this

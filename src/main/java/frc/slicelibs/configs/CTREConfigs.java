@@ -36,6 +36,7 @@ public class CTREConfigs {
         // CANcoder config
         swerveCANcoderConfig.MagnetSensor.SensorDirection = Constants.DriveConstants.ABSOLUTE_ENCODER_INVERT;
         swerveCANcoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
+        
 
         // Drive motor config
         m_swerveDriveConfigs.Slot0.kP = Constants.DriveConstants.DRIVE_KP;
@@ -52,7 +53,6 @@ public class CTREConfigs {
         m_swerveTurnConfigs.Slot0.kP = Constants.DriveConstants.TURN_KP;
         m_swerveTurnConfigs.Slot0.kI = Constants.DriveConstants.TURN_KI;
         m_swerveTurnConfigs.Slot0.kD = Constants.DriveConstants.TURN_KD;
-        m_swerveTurnConfigs.Feedback.SensorToMechanismRatio = Constants.DriveConstants.ANGLE_GEAR_RATIO;
         m_swerveTurnConfigs.ClosedLoopGeneral.ContinuousWrap = true;
         m_swerveTurnConfigs.CurrentLimits.StatorCurrentLimit = Constants.DriveConstants.TURN_STATOR_CURRENT_LIMIT;
         m_swerveTurnConfigs.CurrentLimits.SupplyCurrentLimit = Constants.DriveConstants.TURN_SUPPLY_CURRENT_LIMIT;

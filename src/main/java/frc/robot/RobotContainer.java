@@ -2,9 +2,11 @@ package frc.robot;
 
 import java.util.Set;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.DeferredCommand;
+import frc.robot.Constants.Mode;
 import frc.robot.commands.Drivetrain.DriveCommand;
 import frc.robot.commands.Drivetrain.ResetFieldOrientedHeading;
 import frc.robot.commands.Drivetrain.RunDutyCycleCommand;
@@ -62,7 +64,12 @@ public class RobotContainer {
     // Subsystems
     // ==========================
 
-    switch (Constants.ADVANTAGE_KIT_MODE) {
+    Mode mode = Constants.ADVANTAGE_KIT_MODE;
+    if (RobotBase.isReal()) {
+      mode = Mode.REAL;
+    }
+
+    switch (mode) {
       case REAL:
         m_drivetrain = new Drivetrain(
             new RealSwerveModuleIO(Constants.DriveConstants.FRONT_LEFT_MODULE),
@@ -102,7 +109,7 @@ public class RobotContainer {
     m_sysIDDriveRoutine         = new DeferredCommand(m_drivetrain::getSysIDDriveRoutine, Set.of(m_drivetrain));
 
     /* Intake */
-    m_ToggleIntake    = new ToggleIntake(m_Intake);
+    m_ToggleIntake    = new ToggleIntake(m_Intake, m_Indexer);
     m_OscillateIntake = new OscillateIntake(m_Intake);
 
     /* Indexer */

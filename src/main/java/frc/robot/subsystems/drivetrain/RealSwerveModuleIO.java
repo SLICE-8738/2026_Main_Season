@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.*;
+
 import frc.robot.Constants;
 import frc.slicelibs.configs.SwerveModuleConstants;
 import frc.slicelibs.math.Conversions;
@@ -158,16 +159,15 @@ public class RealSwerveModuleIO implements SwerveModuleIO {
     @Override
     public void setAnglePosition(double degrees) {
         // SensorToMechanismRatio applied, so position is in mechanism rotations
-        turnPositionRequest.Position = degrees / 360.0;
+        turnPositionRequest.Position = Conversions.degreesToTalon(degrees, Constants.DriveConstants.ANGLE_GEAR_RATIO);
         turnMotor.setControl(turnPositionRequest);
     }
 
     @Override
     public void resetToAbsolute() {
-        cancoderPositionSignal.refresh();
+        cancoderPositionSignal.waitForUpdate(250);
         // Set turn motor position in mechanism rotations (offset subtracted)
-        double absoluteRotations = cancoderPositionSignal.getValueAsDouble() - angleOffset.getRotations();
-        // Multiply by gear ratio because SensorToMechanismRatio divides it back out
-        turnMotor.getConfigurator().setPosition(absoluteRotations * Constants.DriveConstants.ANGLE_GEAR_RATIO);
+        double absoluteDegrees = cancoderPositionSignal.getValueAsDouble() * 360 - angleOffset.getDegrees();
+        turnMotor.getConfigurator().setPosition(Conversions.degreesToTalon(absoluteDegrees, Constants.DriveConstants.ANGLE_GEAR_RATIO));
     }
 }

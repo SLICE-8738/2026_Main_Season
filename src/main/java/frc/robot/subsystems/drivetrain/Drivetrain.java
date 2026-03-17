@@ -74,6 +74,7 @@ public class Drivetrain extends SubsystemBase {
         gyroYawVelocitySignal = m_gyro.getAngularVelocityZWorld();
 
         resetModulesToAbsolute();
+        
         while (!m_gyro.isConnected()) {}
         m_gyro.reset();
 
@@ -128,21 +129,6 @@ public class Drivetrain extends SubsystemBase {
         sysIDChooser.addOption("Quasistatic Reverse", sysIDDriveRoutine.quasistatic(Direction.kReverse));
         sysIDChooser.addOption("Dynamic Forward", sysIDDriveRoutine.dynamic(Direction.kForward));
         sysIDChooser.addOption("Dynamic Reverse", sysIDDriveRoutine.dynamic(Direction.kReverse));
-    }
-
-    @Override
-    public void periodic() {
-        for (SwerveModule mod : swerveMods) {
-            mod.updateInputs();
-        }
-
-        updateOdometry();
-        m_field2d.setRobotPose(getPose());
-
-        BaseStatusSignal.refreshAll(gyroYawSignal, gyroYawVelocitySignal);
-
-        Logger.recordOutput("Drivetrain/Current Command",
-            getCurrentCommand() == null ? "Nothing" : getCurrentCommand().getName());
     }
 
     /**
@@ -235,7 +221,7 @@ public class Drivetrain extends SubsystemBase {
     public double[] getAbsoluteAngles() {
         double[] angles = new double[4];
         for (SwerveModule mod : swerveMods) {
-            angles[mod.moduleNumber] = mod.getAbsoluteAngle().getDegrees();
+            angles[mod.moduleNumber] = mod.getAbsoluteAngle().getRotations();
         }
         return angles;
     }
@@ -355,4 +341,26 @@ public class Drivetrain extends SubsystemBase {
     public Command getSysIDDriveRoutine() {
         return sysIDChooser.getSelected();
     }
+
+    @Override
+    public void periodic() {
+
+        SmartDashboard.putNumber("1 Absolute Encoder", getAbsoluteAngles()[0]);
+        SmartDashboard.putNumber("2 Absolute Encoder", getAbsoluteAngles()[1]);
+        SmartDashboard.putNumber("3 Absolute Encoder", getAbsoluteAngles()[2]);
+        SmartDashboard.putNumber("4 Absolute Encoder", getAbsoluteAngles()[3]);
+
+        for (SwerveModule mod : swerveMods) {
+            mod.updateInputs();
+        }
+
+        updateOdometry();
+        m_field2d.setRobotPose(getPose());
+
+        BaseStatusSignal.refreshAll(gyroYawSignal, gyroYawVelocitySignal);
+
+        Logger.recordOutput("Drivetrain/Current Command",
+            getCurrentCommand() == null ? "Nothing" : getCurrentCommand().getName());
+    }
+
 }
