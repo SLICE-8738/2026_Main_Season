@@ -1,26 +1,14 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.AutoAlign;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Indexer.SpinStageOne;
-import frc.robot.commands.Indexer.SpinStageOneManual;
 import frc.robot.commands.Indexer.SpinStageTwo;
-import frc.robot.commands.Indexer.SpinStageTwoManual;
-import frc.robot.commands.Intake.IntakeFuel;
-import frc.robot.commands.Intake.IntakeFuelTimed;
-import frc.robot.commands.Intake.MoveIntakeManual;
 import frc.robot.commands.Intake.OscillateIntake;
 import frc.robot.commands.Intake.RetractIntakeTimed;
 import frc.robot.commands.Intake.RotateIntake;
 import frc.robot.commands.Intake.RotateIntakeManual;
-import frc.robot.commands.shooter.AutoBasicShoot;
-import frc.robot.commands.shooter.AutoShootAtHub;
 import frc.robot.commands.shooter.ManualShoot;
 import frc.robot.commands.shooter.ReadyShooter;
 import frc.robot.commands.shooter.Shoot;
@@ -29,42 +17,20 @@ import frc.robot.commands.shooter.ShootAtHub;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.drivetrain.DriveSubsystem;
-
-import java.util.function.ObjIntConsumer;
-
-import org.ejml.simple.AutomaticSimpleMatrixConvert;
-
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.StadiaController.Button;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.Drivetrain.RealSwerveModuleIO;
+import frc.robot.subsystems.Drivetrain.SimSwerveModuleIO;
+import frc.robot.subsystems.Drivetrain.SwerveModuleIO;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
 
   /*  Controllers */
   private final XboxController m_driverController = Buttons.controller1;
   //private final XboxController m_operatorController = Buttons.controller2;
+
   /* Drive Subsystem */
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-
-  private final AutoAlign m_Align = new AutoAlign(m_robotDrive, m_driverController);
 
   /*  Intake Subsystem & Commands */
   private final Intake m_Intake =  new Intake();
@@ -107,7 +73,7 @@ public class RobotContainer {
 
   /* Autos */
   // TODO improve auto
-  Command autoCommand = new AutoShootAtHub(m_Shooter, m_Indexer);
+  //Command autoCommand = new ShootAtHub(m_Shooter, m_Indexer);
     
   //new ParallelCommandGroup(m_ShootAtHub);
 
@@ -139,12 +105,8 @@ public class RobotContainer {
               MathUtil.applyDeadband(m_driverController.getRawAxis(4), OIConstants.kDriveDeadband), //rotation
               true),
             m_robotDrive)
-
-
   );
 
-
-    
       
           
 
@@ -176,20 +138,9 @@ public class RobotContainer {
     Buttons.controller1_AButton.whileTrue(m_IntakeFuelTimed);
     Buttons.controller1_BButton.whileTrue(m_RetractIntakeTimed);
 
-    Buttons.controller1_YButton.whileTrue(m_Align);
-
     Buttons.controller1_minusButton.onTrue(new InstantCommand( ()->m_robotDrive.resetGyro(), m_robotDrive) );
 
-    Buttons.controller1_YButton.whileTrue(    
-      new RunCommand(
-       () -> m_robotDrive.drive(
-             MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband), //drive
-             MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
-              MathUtil.applyDeadband(m_Align.getOutputDriving(), OIConstants.kDriveDeadband), //rotation
-               true),
-            m_robotDrive)
-      );
-    
+    //Buttons.controller1_XButton.whileTrue(m_OscillateIntake); TODO reimplement
     //m_chooser.getSelected();
   }
 
@@ -201,6 +152,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     // TODO: improve autos
-    return autoCommand;
+    return null; //autoCommand;
   }
 }

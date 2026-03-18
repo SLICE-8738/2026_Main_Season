@@ -1,31 +1,17 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.subsystems.Drivetrain;
 
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.fasterxml.jackson.databind.util.ClassUtil.Ctor;
+import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.subsystems.drivetrain.SwerveModuleIOInputsAutoLogged;
+import frc.slicelibs.math.OnboardModuleState;
 
 public class SwerveModule {
- 
-    private int driveCanID;
-    private int turnCanId;
 
+<<<<<<< HEAD
     private int module_number;
 
     private TalonFX drivingMotor;
@@ -69,84 +55,92 @@ public class SwerveModule {
       //  desiredState.angle = Rotation2d.fromRotations(rotationAnalogEncoder.getAbsolutePosition().getValueAsDouble() /* Constants.DriveConstants.ANGLE_GEAR_RATIO */);
 
       //  System.out.println("Instantiating " + module_number + " swerve module");
+=======
+    private final SwerveModuleIO io;
+    private SwerveModuleIOInputsAutoLogged inputs = new SwerveModuleIOInputsAutoLogged();
+    public final int moduleNumber;
+    private Rotation2d lastAngle;
+    private SwerveModuleState targetState = new SwerveModuleState();
+>>>>>>> Code-V2
 
+    public SwerveModule(SwerveModuleIO io, int moduleNumber) {
+        this.io = io;
+        this.moduleNumber = moduleNumber;
+        lastAngle = getState().angle;
     }
 
-    public SwerveModuleState getSwerveModuleState(){
-        return new SwerveModuleState(drivingMotor.getPosition().getValueAsDouble() / Constants.DriveConstants.DRIVE_GEAR_RATIO, 
-            new Rotation2d(turningMotor.getPosition().getValueAsDouble() /*/ Constants.DriveConstants.ANGLE_GEAR_RATIO)*/));
-    }
-    
-    public SwerveModulePosition getSwerveModulePosition(){
-        return new SwerveModulePosition(drivingMotor.getPosition().getValueAsDouble() / Constants.DriveConstants.DRIVE_GEAR_RATIO,
-            new Rotation2d(turningMotor.getPosition().getValueAsDouble() /*/ Constants.DriveConstants.ANGLE_GEAR_RATIO*/));
+    public void updateInputs() {
+        io.updateInputs(inputs);
+        Logger.processInputs("Drivetrain/Module" + moduleNumber, inputs);
     }
 
-    public void setDutyCycle(double drive, double turn){
-        drivingMotor.set(drive);
-        turningMotor.set(turn);
+    public void runSetpoint(SwerveModuleState state, boolean isOpenLoop) {
+        state = OnboardModuleState.optimize(state, getState().angle);
+        targetState = state;
+        setAngle(state);
+        setSpeed(state, isOpenLoop);
     }
 
-    public void setDesiredState(SwerveModuleState desiredState){
-
-        //turningMotor.setPosition(rotationAnalogEncoder.getAbsolutePosition().getValueAsDouble() - angularOffset.getRotations()/* Constants.DriveConstants.ANGLE_GEAR_RATIO*/ );
-
-        SwerveModuleState correctedDesiredState = new SwerveModuleState();
-        correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
-        correctedDesiredState.angle = desiredState.angle;
-
-        //correctedDesiredState.optimize(new Rotation2d(turningMotor.getPosition().getValueAsDouble()));
-
-        VelocityVoltage velocityRequest = new VelocityVoltage((correctedDesiredState.speedMetersPerSecond / 0.0508) * Constants.DriveConstants.DRIVE_GEAR_RATIO).withSlot(0);
-
-        drivingMotor.setControl(velocityRequest);
-
-        //if(correctedDesiredState.angle.getRotations() > 0.5)
-
-        PositionVoltage positionRequest = new PositionVoltage(correctedDesiredState.angle.getRotations() /** Constants.DriveConstants.ANGLE_GEAR_RATIO*/);
-        //PositionVoltage positionRequest = new PositionVoltage(0);
-
-        turningMotor.setControl(positionRequest);
-
-        SmartDashboard.putNumber(module_number + " desired speed", correctedDesiredState.speedMetersPerSecond);
-        //SmartDashboard.putNumber(module_number + " desired angle", correctedDesiredState.angle.getRotations());
-        SmartDashboard.putNumber(module_number + " desired angle", correctedDesiredState.angle.getRotations() /* * Constants.DriveConstants.ANGLE_GEAR_RATIO */);
-
-        // turningMotor.setControl(new PositionVoltage(desiredState.angle.getRotations()));
-        //SmartDashboard.putNumber("Driving Encoder " + driveCanID, (rotationAnalogEncoder.get());
-        
-
-
-        this.desiredState = desiredState;
-
+    public void runCharacterization(double volts) {
+        io.setDriveVoltage(volts);
     }
 
-    public double getRelativeEncoder(){
-        return turningMotor.getPosition().getValueAsDouble();
+    public void runDutyCycle(double drivePercentOutput, double anglePercentOutput) {
+        io.runDriveDutyCycle(drivePercentOutput);
+        io.runAngleDutyCycle(anglePercentOutput);
     }
 
-    public double getAbsoluteEncoder(){
-        return rotationAnalogEncoder.getAbsolutePosition().getValueAsDouble();
+    private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop) {
+        if (isOpenLoop) {
+            io.runDriveDutyCycle(desiredState.speedMetersPerSecond / Constants.DriveConstants.MAX_LINEAR_VELOCITY);
+        } else {
+            io.setDriveVelocity(desiredState.speedMetersPerSecond);
+        }
     }
 
-    //public double getPosition() {
-    //  double b = (inverted ? -1.0 : 1.0) * ((rotationAnalogEncoder.get()))
-    //}
-    
-    // TODO : add a RESET ENCODERS METHOD
-
-    public void resetEncoders(){
-        turningMotor.setPosition(0);
+    private void setAngle(SwerveModuleState desiredState) {
+        // Suppress jitter when nearly stopped
+        Rotation2d angle = (Math
+                .abs(desiredState.speedMetersPerSecond) <= (Constants.DriveConstants.MAX_LINEAR_VELOCITY * 0.01))
+                        ? lastAngle
+                        : desiredState.angle;
+        io.setAnglePosition(angle.getDegrees());
+        lastAngle = angle;
     }
-    
-    /*
-    @Override
-    public void periodic() {
-        SmartDashboard.putNumber("Back Left " + drivingCanID, (m_drivingEncoder.getPosition() - m_offset.getRotations()));
-        SmartDashboard.putNumber("Encoder Angle "  + mod_number, m_intergratedTurningEncoder.getPosition());
-    }*/
-    
 
+    private Rotation2d getIntegratedAngle() {
+        return inputs.integratedAnglePosition;
+    }
+
+    public Rotation2d getAbsoluteAngle() {
+        return inputs.absoluteAnglePosition;
+    }
+
+    public void resetToAbsolute() {
+        io.resetToAbsolute();
+    }
+
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(inputs.driveVelocityMetersPerSec, getIntegratedAngle());
+    }
+
+    public SwerveModuleState getTargetState() {
+        return targetState;
+    }
+
+    public SwerveModulePosition getPosition() {
+        return new SwerveModulePosition(inputs.drivePositionMeters, getIntegratedAngle());
+    }
+
+    public double getDriveAcceleration() {
+        return inputs.driveAccelerationMetersPerSecSquared;
+    }
+
+    public double getDriveVoltage() {
+        return inputs.driveAppliedVolts;
+    }
+
+    public double getDriveOutputCurrent() {
+        return inputs.driveCurrentAmps;
+    }
 }
-
-

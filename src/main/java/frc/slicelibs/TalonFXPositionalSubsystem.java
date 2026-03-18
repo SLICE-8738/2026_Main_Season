@@ -11,7 +11,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -81,9 +81,9 @@ public class TalonFXPositionalSubsystem extends SubsystemBase {
             } else {
                 configs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
             }
-            configs.Slot0.kP = kP * sensorToMechRatio;
-            configs.Slot0.kI = kI * sensorToMechRatio;
-            configs.Slot0.kD = kD * sensorToMechRatio;
+            configs.Slot0.kP = kP;
+            configs.Slot0.kI = kI;
+            configs.Slot0.kD = kD;
             configs.Slot0.kG = kG;
             configs.Slot0.GravityType = gravityType;
             configs.Feedback.SensorToMechanismRatio = sensorToMechRatio;
@@ -144,7 +144,7 @@ public class TalonFXPositionalSubsystem extends SubsystemBase {
      * @param velocity a value in the units defined by the positionConversionFactor
      */
     public void setPosition(double position) {
-        PositionVoltage request = new PositionVoltage(0).withSlot(0);
+        PositionVoltage request = new PositionVoltage(0).withSlot(0).withEnableFOC(true);
         for (TalonFX motor : motors) {
             motor.setControl(request.withPosition(position / positionConversionFactor));
         }
