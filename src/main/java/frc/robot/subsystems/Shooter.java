@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants.FullShooterParams;
-import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.slicelibs.TalonFXPositionalSubsystem;
 
 public class Shooter extends TalonFXPositionalSubsystem {
@@ -81,22 +81,22 @@ public class Shooter extends TalonFXPositionalSubsystem {
         setPosition(angle);
     }
 
-    public double getHorizontalVelocity(double distance, Translation2d target) {
-        FullShooterParams params = Constants.ShooterConstants.SHOOTER_MAP.get(distance);
-        double baselineHorizVel = distance / params.tof();
+    // public double getHorizontalVelocity(double distance, Translation2d target) {
+    //     FullShooterParams params = Constants.ShooterConstants.SHOOTER_MAP.get(distance);
+    //     double baselineHorizVel = distance / params.tof();
 
-        // Project robot's field-relative velocity onto the robot to target vector
-        ChassisSpeeds fieldSpeeds = m_drivetrain.getFieldRelativeSpeeds();
-        Translation2d toTarget = target.minus(m_drivetrain.getPose().getTranslation()).getNorm() > 0
-                ? target.minus(m_drivetrain.getPose().getTranslation())
-                : new Translation2d(1, 0);
-        Translation2d unitVec = toTarget.div(toTarget.getNorm());
-        double robotVelAlongTarget = fieldSpeeds.vxMetersPerSecond * unitVec.getX()
-                + fieldSpeeds.vyMetersPerSecond * unitVec.getY();
+    //     // Project robot's field-relative velocity onto the robot to target vector
+    //     ChassisSpeeds fieldSpeeds = m_drivetrain.getFieldRelativeSpeeds();
+    //     Translation2d toTarget = target.minus(m_drivetrain.getPose().getTranslation()).getNorm() > 0
+    //             ? target.minus(m_drivetrain.getPose().getTranslation())
+    //             : new Translation2d(1, 0);
+    //     Translation2d unitVec = toTarget.div(toTarget.getNorm());
+    //     double robotVelAlongTarget = fieldSpeeds.vxMetersPerSecond * unitVec.getX()
+    //             + fieldSpeeds.vyMetersPerSecond * unitVec.getY();
 
-        // Moving toward target means ball needs less velocity
-        return baselineHorizVel - robotVelAlongTarget;
-    }
+    //     // Moving toward target means ball needs less velocity
+    //     return baselineHorizVel - robotVelAlongTarget;
+    // }
 
     public void calculateShot(double distance, double requiredVelocity) {
         FullShooterParams baseline = Constants.ShooterConstants.SHOOTER_MAP.get(distance);

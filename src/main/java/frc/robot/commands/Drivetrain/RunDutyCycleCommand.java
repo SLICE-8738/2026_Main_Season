@@ -1,7 +1,7 @@
 package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.Drivetrain;
 
 /**
  * Directly sets all swerve module drive and angle motors to given percent

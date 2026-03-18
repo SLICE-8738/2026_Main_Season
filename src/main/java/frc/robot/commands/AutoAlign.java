@@ -11,6 +11,8 @@ import java.util.concurrent.BlockingDeque;
 import com.ctre.phoenix6.controls.PositionVoltage;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,18 +20,19 @@ import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.Constants.OIConstants;
-import frc.robot.subsystems.drivetrain.DriveSubsystem;
+import frc.robot.subsystems.drivetrain.Drivetrain;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoAlign extends Command {
 
-  private final DriveSubsystem m_drivesubsystem;
+  private final Drivetrain m_drivesubsystem;
   private final XboxController m_controller;
   
   private PIDController rotationDriveController;
   private PIDController rotationAlignController; 
 
-  public AutoAlign(DriveSubsystem drivetrain, XboxController controller) {
+
+  public AutoAlign(Drivetrain drivetrain, XboxController controller) {
 
     m_drivesubsystem = drivetrain;
     m_controller = controller;
@@ -42,7 +45,7 @@ public class AutoAlign extends Command {
     rotationAlignController = new PIDController(Constants.AutoConstants.AUTO_ALIGN_HIDDEN_KP, Constants.AutoConstants.AUTO_ALIGN_HIDDEN_KI, Constants.AutoConstants.AUTO_ALIGN_HIDDEN_KD);
 
     rotationAlignController.enableContinuousInput(0, 360);
-
+    rotationAlignController.setTolerance(2);
 
   }
 
@@ -57,11 +60,11 @@ public class AutoAlign extends Command {
   }
 
   public double getOutputDriving() {
-    return rotationDriveController.calculate(getError(),-10);
+    return rotationDriveController.calculate(getError(),0);
   }
 
   public double getOutputRotation() {
-    return rotationAlignController.calculate(getError(), -10);
+    return rotationAlignController.calculate(getError(), 0);
   }
 
   // Called when the command is initially scheduled.
@@ -86,24 +89,20 @@ public class AutoAlign extends Command {
 
     if (isInFrame()) {
       if (isOfftarget()) {
-        m_drivesubsystem.drive(
-              MathUtil.applyDeadband(m_controller.getRawAxis(1), OIConstants.kDriveDeadband), //drive
-              MathUtil.applyDeadband(m_controller.getRawAxis(0), OIConstants.kDriveDeadband),
-              MathUtil.applyDeadband(getOutputDriving(), OIConstants.kDriveDeadband), //rotation
-              true);
+        m_drivesubsystem.drive(new Transform2d(m_controller.getRawAxis(1),0,Rotation2d.fromRadians(getOutputDriving())), false, true);
       } else {
-        m_drivesubsystem.drive(0, 0, 0, true);
+        m_drivesubsystem.drive(new Transform2d(), false, true);
       }
     }
      else {
-       m_drivesubsystem.drive(0, 0, getOutputRotation(), true);
+       m_drivesubsystem.drive(new Transform2d(0,0, Rotation2d.fromRadians(getOutputRotation())), false, true);
      }
 
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) { 
-    m_drivesubsystem.drive(0,0,0, true);
+    m_drivesubsystem.drive(new Transform2d(), false, false);
   }
 
   // Returns true when the command should end.

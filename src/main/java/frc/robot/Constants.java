@@ -306,4 +306,16 @@ public final class Constants {
 
   }
 
+  public static class PathPlannerAuto {
+    public static final double robot_mass = 51.45; // Kilograms
+    public static final double robot_MOI = 6.882; // robot_mass*(M^2)
+
+    // Bumpers
+
+    public static final double bumper_width = 0.900;
+    public static final double bumper_offsetX = 0.00;
+  }
+
+
+
 }

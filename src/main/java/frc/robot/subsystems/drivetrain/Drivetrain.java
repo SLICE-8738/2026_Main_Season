@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Drivetrain;
+package frc.robot.subsystems.drivetrain;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;
@@ -8,7 +8,13 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.MathUtil;
@@ -40,6 +46,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Mechanism;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.LimelightHelpers;
 
 public class Drivetrain extends SubsystemBase {
@@ -60,6 +67,9 @@ public class Drivetrain extends SubsystemBase {
     private final StatusSignal<AngularVelocity> gyroYawVelocitySignal;
     public final Field2d m_field2d;
     private DoubleSupplier rotationOverride = null;
+
+    RobotConfig config;
+
 
     private Rotation2d fieldOrientedOffset;
     private Rotation2d simHeading = new Rotation2d();
@@ -100,6 +110,29 @@ public class Drivetrain extends SubsystemBase {
                         DriverStation.getAlliance().get() == Alliance.Blue ? 180 : 0)),
                 VecBuilder.fill(0.1, 0.1, 0.1),
                 VecBuilder.fill(0.3, 0.3, 0.3));
+
+        
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            // Handle exception as needed
+             e.printStackTrace();
+            }
+
+            // Configure AutoBuilder last
+            AutoBuilder.configure(
+            this::getPose, // Robot pose supplier
+            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+            this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+             (speeds, feedforwards) -> runChassisSpeeds(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
+            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            ),
+            config, // The robot configuration
+            () -> DriverStation.getAlliance().get() == Alliance.Red,
+            this // Reference to this subsystem to set requirements
+    );
 
         fieldOrientedOffset = Rotation2d.fromDegrees(
                 DriverStation.getAlliance().get() == Alliance.Blue ? 0 : 180);
@@ -167,7 +200,7 @@ public class Drivetrain extends SubsystemBase {
         m_odometry.update(getHeading(), getModulePositions());
 
         // Generic vision update — add limelight names as needed
-        for (String limelightName : new String[] { "limelight" }) { // TODO: Need to find limelight names
+        for (String limelightName : new String[] { "limelight-shooter" }) { // TODO: Need to find limelight names
             LimelightHelpers.SetRobotOrientation(limelightName, getHeading().getDegrees(), 0, 0, 0, 0, 0);
             LimelightHelpers.PoseEstimate estimate = LimelightHelpers
                     .getBotPoseEstimate_wpiBlue_MegaTag2(limelightName);

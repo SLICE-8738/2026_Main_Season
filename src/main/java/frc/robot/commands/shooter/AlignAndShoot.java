@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Shooter;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.drivetrain.Drivetrain;
 import frc.slicelibs.PolarJoystickFilter;
 import frc.slicelibs.configs.JoystickFilterConfig;
 
@@ -63,7 +63,7 @@ public class AlignAndShoot extends Command {
 
         // Pre-calculate shot params
         double dist = m_drivetrain.getDistanceTo(targetPosition);
-        m_shooter.calculateShot(dist, m_shooter.getHorizontalVelocity(dist, targetPosition));
+        // m_shooter.calculateShot(dist, m_shooter.getHorizontalVelocity(dist, targetPosition));
 
     }
 
@@ -74,9 +74,9 @@ public class AlignAndShoot extends Command {
         double dist = m_drivetrain.getDistanceTo(compensated);
 
         // Recalculate shot params against the compensated target each loop
-        if (!m_shooter.isTuningMode()) {
-            m_shooter.calculateShot(dist, m_shooter.getHorizontalVelocity(dist, compensated));
-        }
+        // if (!m_shooter.isTuningMode()) {
+        //     m_shooter.calculateShot(dist, m_shooter.getHorizontalVelocity(dist, compensated));
+        // }
         
         // Drive - Drive controls translation, PID controls rotation
         double[] translation = translationFilter.filter(
