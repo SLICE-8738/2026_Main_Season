@@ -6,9 +6,9 @@ package frc.slicelibs.configs;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import frc.robot.Constants;
-
 
 public class CTREConfigs {
 
@@ -23,7 +23,6 @@ public class CTREConfigs {
     public final TalonFXConfiguration rollerConfigs = new TalonFXConfiguration();
 
     public final TalonFXConfiguration indexerConfigs = new TalonFXConfiguration();
-
 
     public CTREConfigs() {
         configureSwerve();
@@ -48,6 +47,7 @@ public class CTREConfigs {
         m_swerveDriveConfigs.CurrentLimits.SupplyCurrentLimit = Constants.DriveConstants.DRIVE_SUPPLY_CURRENT_LIMIT;
         m_swerveDriveConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         m_swerveDriveConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+        m_swerveDriveConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
         // Turn motor config
         m_swerveTurnConfigs.Slot0.kP = Constants.DriveConstants.TURN_KP;
@@ -58,6 +58,7 @@ public class CTREConfigs {
         m_swerveTurnConfigs.CurrentLimits.SupplyCurrentLimit = Constants.DriveConstants.TURN_SUPPLY_CURRENT_LIMIT;
         m_swerveTurnConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         m_swerveTurnConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+        m_swerveTurnConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     }
 
     private void configureShooter() {
@@ -72,34 +73,32 @@ public class CTREConfigs {
         shooterConfigs.CurrentLimits.SupplyCurrentLimit = Constants.ShooterConstants.FLYWHEEL_SUPPLY_CURRENT_LIMIT;
         shooterConfigs.CurrentLimits.StatorCurrentLimitEnable = true;
         shooterConfigs.CurrentLimits.SupplyCurrentLimitEnable = true;
+        shooterConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         // Pivot motor configurations
-        pivotConfigs.Slot0.kP = Constants.ShooterConstants.AIM_KP;
-        pivotConfigs.Slot0.kI = Constants.ShooterConstants.AIM_KI;
-        pivotConfigs.Slot0.kD = Constants.ShooterConstants.AIM_KD;
-        pivotConfigs.Feedback.SensorToMechanismRatio = Constants.ShooterConstants.PIVOT_GEAR_RATIO;
+        pivotConfigs.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        pivotConfigs.CurrentLimits.StatorCurrentLimit = Constants.ShooterConstants.PIVOT_STATOR_CURRENT_LIMIT;
+        pivotConfigs.CurrentLimits.SupplyCurrentLimit = Constants.ShooterConstants.PIVOT_SUPPLY_CURRENT_LIMIT;
     }
 
     private void configureIntake() {
         // Extender motor configurations
-        extenderConfigs.Slot0.kP = Constants.IntakeConstants.EXTENDER_KP;
-        extenderConfigs.Slot0.kI = Constants.IntakeConstants.EXTENDER_KI;
-        extenderConfigs.Slot0.kD = Constants.IntakeConstants.EXTENDER_KD;
-        extenderConfigs.Slot0.kG = Constants.IntakeConstants.EXTENDER_KG;
-        extenderConfigs.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.EXTENDER_RATIO;
         extenderConfigs.CurrentLimits.StatorCurrentLimit = Constants.IntakeConstants.EXTENDER_STATOR_CURRENT_LIMIT;
         extenderConfigs.CurrentLimits.SupplyCurrentLimit = Constants.IntakeConstants.EXTENDER_SUPPLY_CURRENT_LIMIT;
+        extenderConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         // Roller motor configurations
         rollerConfigs.Feedback.SensorToMechanismRatio = Constants.IntakeConstants.ROLLER_GEAR_RATIO;
         rollerConfigs.CurrentLimits.StatorCurrentLimit = Constants.IntakeConstants.ROLLER_STATOR_CURRENT_LIMIT;
         rollerConfigs.CurrentLimits.SupplyCurrentLimit = Constants.IntakeConstants.ROLLER_SUPPLY_CURRENT_LIMIT;
+        rollerConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     }
 
     private void configureIndexer() {
         // Indexer motors configurations
         indexerConfigs.CurrentLimits.StatorCurrentLimit = Constants.IndexerConstants.INDEXER_STATOR_CURRENT_LIMIT;
         indexerConfigs.CurrentLimits.SupplyCurrentLimit = Constants.IndexerConstants.INDEXER_SUPPLY_CURRENT_LIMIT;
+        indexerConfigs.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     }
 
 }

@@ -28,13 +28,13 @@ public class RealSwerveModuleIO implements SwerveModuleIO {
     private final SimpleMotorFeedforward driveFeedforward;
 
     /* Drive control requests */
-    private final DutyCycleOut driveDutyCycleRequest = new DutyCycleOut(0);
-    private final VoltageOut driveVoltageRequest = new VoltageOut(0);
-    private final VelocityVoltage driveVelocityRequest = new VelocityVoltage(0);
+    private final DutyCycleOut driveDutyCycleRequest = new DutyCycleOut(0).withEnableFOC(true);
+    private final VoltageOut driveVoltageRequest = new VoltageOut(0).withEnableFOC(true);
+    private final VelocityVoltage driveVelocityRequest = new VelocityVoltage(0).withEnableFOC(true);
 
     /* Turn control request - ContinuousWrap enabled in config */
-    private final PositionVoltage turnPositionRequest = new PositionVoltage(0);
-    private final VoltageOut turnVoltageRequest = new VoltageOut(0);
+    private final PositionVoltage turnPositionRequest = new PositionVoltage(0).withEnableFOC(true);
+    private final VoltageOut turnVoltageRequest = new VoltageOut(0).withEnableFOC(true);
 
     /* Drive status signals */
     private final StatusSignal<Angle> drivePositionSignal;
@@ -60,7 +60,7 @@ public class RealSwerveModuleIO implements SwerveModuleIO {
         driveMotor.getConfigurator().apply(Constants.CTRE_CONFIGS.m_swerveDriveConfigs);
         driveMotor.getConfigurator().setPosition(0);
         driveFeedforward = new SimpleMotorFeedforward(
-            Constants.DriveConstants.DRIVE_KS, Constants.DriveConstants.DRIVE_KV);
+                Constants.DriveConstants.DRIVE_KS, Constants.DriveConstants.DRIVE_KV);
 
         /* CANcoder */
         angleEncoder = new CANcoder(moduleConstants.absoluteEncoderID);
@@ -84,42 +84,38 @@ public class RealSwerveModuleIO implements SwerveModuleIO {
         turnAppliedVoltsSignal = turnMotor.getMotorVoltage();
         turnCurrentSignal = turnMotor.getSupplyCurrent();
 
-        BaseStatusSignal.setUpdateFrequencyForAll(100,
-            drivePositionSignal, driveVelocitySignal,
-            turnPositionSignal, turnVelocitySignal);
+        BaseStatusSignal.setUpdateFrequencyForAll(100, 
+                drivePositionSignal, driveVelocitySignal,
+                turnPositionSignal, turnVelocitySignal);
         BaseStatusSignal.setUpdateFrequencyForAll(50,
-            driveAccelerationSignal, driveAppliedVoltsSignal, driveCurrentSignal,
-            turnAppliedVoltsSignal, turnCurrentSignal);
+                driveAccelerationSignal, driveAppliedVoltsSignal, driveCurrentSignal,
+                turnAppliedVoltsSignal, turnCurrentSignal);
     }
 
     @Override
     public void updateInputs(SwerveModuleIOInputs inputs) {
         BaseStatusSignal.refreshAll(
-            drivePositionSignal, driveVelocitySignal,
-            driveAccelerationSignal, driveAppliedVoltsSignal, driveCurrentSignal,
-            turnPositionSignal, turnVelocitySignal,
-            turnAppliedVoltsSignal, turnCurrentSignal);
+                drivePositionSignal, driveVelocitySignal,
+                driveAccelerationSignal, driveAppliedVoltsSignal, driveCurrentSignal,
+                turnPositionSignal, turnVelocitySignal,
+                turnAppliedVoltsSignal, turnCurrentSignal);
         cancoderPositionSignal.refresh();
 
-        inputs.drivePositionMeters =
-            Conversions.talonToMeters(drivePositionSignal.getValueAsDouble(),
+        inputs.drivePositionMeters = Conversions.talonToMeters(drivePositionSignal.getValueAsDouble(),
                 Constants.DriveConstants.WHEEL_CIRCUMFERENCE, Constants.DriveConstants.DRIVE_GEAR_RATIO);
-        inputs.driveVelocityMetersPerSec =
-            Conversions.talonToMPS(driveVelocitySignal.getValueAsDouble(),
+        inputs.driveVelocityMetersPerSec = Conversions.talonToMPS(driveVelocitySignal.getValueAsDouble(),
                 Constants.DriveConstants.WHEEL_CIRCUMFERENCE, Constants.DriveConstants.DRIVE_GEAR_RATIO);
-        inputs.driveAccelerationMetersPerSecSquared =
-            Conversions.talonToMPSSquared(driveAccelerationSignal.getValueAsDouble(),
+        inputs.driveAccelerationMetersPerSecSquared = Conversions.talonToMPSSquared(
+                driveAccelerationSignal.getValueAsDouble(),
                 Constants.DriveConstants.WHEEL_CIRCUMFERENCE, Constants.DriveConstants.DRIVE_GEAR_RATIO);
         inputs.driveAppliedVolts = driveAppliedVoltsSignal.getValueAsDouble();
         inputs.driveCurrentAmps = driveCurrentSignal.getValueAsDouble();
 
-        inputs.absoluteAnglePosition =
-            Rotation2d.fromRotations(cancoderPositionSignal.getValueAsDouble());
-        // SensorToMechanismRatio is set in config, so motor position is already in mechanism rotations
-        inputs.integratedAnglePosition =
-            Rotation2d.fromRotations(turnPositionSignal.getValueAsDouble());
-        inputs.angleVelocityDegreesPerSec =
-            turnVelocitySignal.getValueAsDouble() * 360.0;
+        inputs.absoluteAnglePosition = Rotation2d.fromRotations(cancoderPositionSignal.getValueAsDouble());
+        // SensorToMechanismRatio is set in config, so motor position is already in
+        // mechanism rotations
+        inputs.integratedAnglePosition = Rotation2d.fromRotations(turnPositionSignal.getValueAsDouble());
+        inputs.angleVelocityDegreesPerSec = turnVelocitySignal.getValueAsDouble() * 360.0;
         inputs.angleAppliedVolts = turnAppliedVoltsSignal.getValueAsDouble();
         inputs.angleCurrentAmps = turnCurrentSignal.getValueAsDouble();
     }
@@ -138,8 +134,8 @@ public class RealSwerveModuleIO implements SwerveModuleIO {
 
     @Override
     public void setDriveVelocity(double velocityMPS) {
-        double motorRPS = Conversions.MPSToTalon(
-            velocityMPS, Constants.DriveConstants.WHEEL_CIRCUMFERENCE, Constants.DriveConstants.DRIVE_GEAR_RATIO);
+        double motorRPS = Conversions.MPSToTalon(velocityMPS, Constants.DriveConstants.WHEEL_CIRCUMFERENCE,
+                Constants.DriveConstants.DRIVE_GEAR_RATIO);
         driveVelocityRequest.Velocity = motorRPS;
         driveVelocityRequest.FeedForward = driveFeedforward.calculate(velocityMPS);
         driveMotor.setControl(driveVelocityRequest);
