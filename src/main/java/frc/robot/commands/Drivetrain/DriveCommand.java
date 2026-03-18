@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Buttons;
 import frc.robot.Constants;
-import frc.robot.subsystems.drivetrain.Drivetrain;
+import frc.robot.subsystems.Drivetrain.Drivetrain;
 import frc.slicelibs.PolarJoystickFilter;
 import frc.slicelibs.configs.JoystickFilterConfig;
 

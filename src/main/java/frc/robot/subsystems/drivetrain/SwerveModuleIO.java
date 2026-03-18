@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drivetrain;
+package frc.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.AutoLog;

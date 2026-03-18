@@ -18,10 +18,10 @@ import frc.robot.commands.Shooter.AlignAndShoot;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.drivetrain.Drivetrain;
-import frc.robot.subsystems.drivetrain.RealSwerveModuleIO;
-import frc.robot.subsystems.drivetrain.SimSwerveModuleIO;
-import frc.robot.subsystems.drivetrain.SwerveModuleIO;
+import frc.robot.subsystems.Drivetrain.Drivetrain;
+import frc.robot.subsystems.Drivetrain.RealSwerveModuleIO;
+import frc.robot.subsystems.Drivetrain.SimSwerveModuleIO;
+import frc.robot.subsystems.Drivetrain.SwerveModuleIO;
 
 public class RobotContainer {
 
